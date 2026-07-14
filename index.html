@@ -1,1 +1,603 @@
-"<h1>�غ���</h1>" 
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금강지점 최강4팀 — 관제판</title>
+<style>
+  :root{
+    --bg: #05080d;
+    --bg-deep: #030507;
+    --panel: rgba(10,22,34,0.55);
+    --panel-solid: #0a1622;
+    --line: rgba(53,212,255,0.28);
+    --line-dim: rgba(53,212,255,0.12);
+    --text: #e7f6ff;
+    --muted: #6f93a8;
+    --faint: #3d5567;
+
+    --cyan: #35d4ff;
+    --cyan-soft: rgba(53,212,255,0.14);
+    --peacock: #22c4a6;
+    --peacock-soft: rgba(34,196,166,0.16);
+    --banana: #ffd23f;
+    --banana-soft: rgba(255,210,63,0.14);
+    --tangerine: #ff7a45;
+    --tangerine-soft: rgba(255,122,69,0.14);
+    --graphite: #cbd6de;
+    --graphite-soft: rgba(203,214,222,0.14);
+
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
+    --sans: -apple-system, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh;}
+  body{
+    background-image:
+      radial-gradient(ellipse 900px 600px at 20% -10%, rgba(53,212,255,0.10), transparent 60%),
+      radial-gradient(ellipse 800px 600px at 100% 10%, rgba(34,196,166,0.07), transparent 60%),
+      linear-gradient(var(--bg-deep), var(--bg-deep)),
+      repeating-linear-gradient(0deg, rgba(53,212,255,0.035) 0px, rgba(53,212,255,0.035) 1px, transparent 1px, transparent 42px),
+      repeating-linear-gradient(90deg, rgba(53,212,255,0.035) 0px, rgba(53,212,255,0.035) 1px, transparent 1px, transparent 42px);
+    padding: 30px 20px 60px;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+  }
+  .wrap{max-width:1180px; margin:0 auto; position:relative; z-index:1;}
+  .bg-deco{position:fixed; inset:0; z-index:0; pointer-events:none;}
+  .bg-deco svg{width:100%; height:100%;}
+
+  /* corner-bracket frame, echoes the HUD reference image */
+  .hud-frame{position:relative;}
+  .hud-frame::before, .hud-frame::after,
+  .hud-frame .br-tl, .hud-frame .br-tr, .hud-frame .br-bl, .hud-frame .br-br{
+    content:''; position:absolute; width:10px; height:10px; border-color:var(--cyan); opacity:0.85;
+  }
+  .hud-frame::before{top:-1px; left:-1px; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan);}
+  .hud-frame::after{bottom:-1px; right:-1px; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan);}
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex; justify-content:space-between; align-items:center;
+    border:1px solid var(--line); border-radius:4px; background:var(--panel);
+    padding:18px 24px; margin-bottom:26px; gap:20px; flex-wrap:wrap;
+    backdrop-filter: blur(6px);
+  }
+  .brand-eyebrow{
+    font-family:var(--mono); font-size:10px; letter-spacing:0.22em; color:var(--muted);
+    text-transform:uppercase; margin-bottom:6px;
+  }
+  h1{font-size:24px; font-weight:800; letter-spacing:0.01em; color:var(--text);}
+  h1 span{color:var(--cyan); text-shadow:0 0 14px rgba(53,212,255,0.55);}
+  .clock{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:right;}
+  .clock b{color:var(--cyan);}
+
+  .radar{position:relative; width:64px; height:64px; flex-shrink:0;}
+  .radar svg{width:100%; height:100%;}
+  .radar .sweep{transform-origin:32px 32px; animation:spin 4s linear infinite;}
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .header-left{display:flex; align-items:center; gap:16px;}
+
+  /* ---------- Totals strip ---------- */
+  .totals{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:30px;}
+  @media (max-width:860px){ .totals{grid-template-columns:repeat(2,1fr);} }
+  .total-cell{
+    background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px 18px;
+    position:relative; backdrop-filter:blur(6px);
+  }
+  .total-cell .label{font-size:12px; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px; text-transform:uppercase;}
+  .stat-row{display:flex; align-items:center; text-align:center; gap:6px;}
+  .stat-block{flex:1; min-width:0;}
+  .stat-row.divided .stat-block:not(:first-child){border-left:1px solid var(--line); padding-left:10px;}
+  .stat-block .stat-label{font-size:11px; color:var(--muted); letter-spacing:0.05em; margin-bottom:6px;}
+  .stat-block .stat-val{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
+  .stat-block .stat-val.money{font-size:14px;}
+  .stat-block .stat-rate{font-family:var(--mono); font-size:10px; color:var(--faint); margin-top:3px;}
+  .total-cell .val{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
+  .total-cell .sub{font-size:11px; color:var(--faint); margin-top:4px;}
+
+  /* ---------- Section heading ---------- */
+  .section-head{display:flex; align-items:center; gap:10px; margin:38px 0 14px;}
+  .section-head .hexmark{width:16px; height:16px; flex-shrink:0;}
+  .section-head .idx{font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.1em;}
+  .section-head h2{font-size:16px; font-weight:700; letter-spacing:0.03em; color:var(--text); text-transform:uppercase;}
+  .section-head .rule{flex:1; height:1px; background:linear-gradient(90deg, var(--line), transparent);}
+
+  /* ---------- Leaderboard ---------- */
+  .board{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:4px 0; backdrop-filter:blur(6px);}
+  .board-row{
+    display:grid; grid-template-columns:32px 1fr 130px 100px 100px; align-items:center;
+    gap:12px; padding:11px 20px; border-bottom:1px solid var(--line-dim);
+  }
+  .board-row:last-child{border-bottom:none;}
+  .board-head{
+    display:grid; grid-template-columns:32px 1fr 130px 100px 100px; gap:12px; padding:8px 20px 10px;
+    font-family:var(--mono); font-size:11px; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+  .board-head span:nth-child(4), .board-head span:nth-child(5){text-align:center;}
+  .rank{font-family:var(--mono); font-size:13px; color:var(--faint); font-weight:700;}
+  .rank.gold{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
+  .rank.silver{color:#dfe9ef;}
+  .rank.bronze{color:var(--tangerine); text-shadow:0 0 8px rgba(255,122,69,0.4);}
+  .who{display:flex; align-items:center; gap:9px;}
+  .dot{width:7px; height:7px; border-radius:50%; flex-shrink:0; box-shadow:0 0 6px currentColor;}
+  .dot.peacock{background:var(--peacock); color:var(--peacock);}
+  .dot.banana{background:var(--banana); color:var(--banana);}
+  .dot.tangerine{background:var(--tangerine); color:var(--tangerine);}
+  .dot.graphite{background:var(--graphite); color:var(--graphite);}
+  .who-name{font-size:14px; font-weight:600;}
+  .who-team{font-size:10px; color:var(--faint);}
+  .bar-track{height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:3px; box-shadow:0 0 8px currentColor;}
+  .amt{font-family:var(--mono); font-size:13px; text-align:center; color:var(--text);}
+  .amt .unit{color:var(--faint); font-size:11px; margin-left:2px;}
+
+  /* ---------- Team panels ---------- */
+  .teams{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:860px){ .teams{grid-template-columns:1fr;} }
+  .team-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:16px 16px 8px; position:relative; backdrop-filter:blur(6px);
+    border-top:2px solid var(--tc);
+  }
+  .team-card.peacock{--tc:var(--peacock);}
+  .team-card.banana{--tc:var(--banana);}
+  .team-card.tangerine{--tc:var(--tangerine);}
+  .team-card .team-title{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .team-title .name{font-size:13px; font-weight:700; letter-spacing:0.02em;}
+  .team-title .count{font-family:var(--mono); font-size:10px; color:var(--muted);}
+  .member{display:grid; grid-template-columns:1fr 40px 100px; align-items:center; padding:7px 0; border-bottom:1px dashed var(--line-dim); font-size:13px;}
+  .member .m-canp{display:contents;}
+  .member .m-label{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--muted);}
+  .member .m-amt{text-align:right;}
+  .member .m-amt.has{color:var(--text);}
+  .member:last-child{border-bottom:none;}
+  .member .m-name.zero{color:var(--faint);}
+  .member .m-canp{font-family:var(--mono); font-size:11px; color:var(--muted);}
+  .member .m-canp.has{color:var(--text);}
+  .tag{font-size:9px; padding:1px 6px; border-radius:3px; margin-left:6px; font-family:var(--mono); vertical-align:1px;}
+
+  /* ---------- Lower cards ---------- */
+  .lower{display:grid; grid-template-columns:1.3fr 1fr; gap:16px; margin-top:36px;}
+  @media (max-width:860px){ .lower{grid-template-columns:1fr;} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:18px; backdrop-filter:blur(6px);}
+  .card h3{font-size:12px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; letter-spacing:0.03em; text-transform:uppercase; color:var(--muted);}
+  .sched-item{display:flex; gap:12px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line-dim);}
+  .sched-item:last-child{border-bottom:none;}
+  .sched-date{font-family:var(--mono); font-size:11px; color:var(--cyan); background:var(--cyan-soft); padding:3px 7px; border-radius:3px; min-width:60px; text-align:center;}
+  .sched-title{font-size:13px;}
+  .empty-note{color:var(--faint); font-size:12px;}
+  .placeholder{border:1px dashed var(--line); border-radius:4px; padding:14px; font-size:12px; color:var(--muted); line-height:1.7; background:rgba(0,0,0,0.2);}
+
+  /* ---------- CIS donut ---------- */
+  .cis-layout{display:flex; gap:32px; align-items:center; flex-wrap:wrap;}
+  .cis-chart-wrap{position:relative; width:200px; height:200px; flex-shrink:0;}
+  .cis-chart-wrap svg{width:100%; height:100%; transform:rotate(0deg);}
+  .cis-total{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;}
+  .cis-total-num{font-family:var(--mono); font-size:30px; font-weight:800; color:var(--cyan); text-shadow:0 0 14px rgba(53,212,255,0.5);}
+  .cis-total-label{font-size:10px; color:var(--faint); letter-spacing:0.08em; margin-top:2px;}
+  .cis-legend{flex:1; min-width:180px; display:flex; flex-direction:column; gap:9px;}
+  .cis-legend-item{display:flex; align-items:center; gap:9px; font-size:13px;}
+  .cis-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0; box-shadow:0 0 6px currentColor;}
+  .cis-legend-name{flex:1; color:var(--text);}
+  .cis-legend-count{font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .cis-input-row{margin-top:20px; padding-top:16px; border-top:1px solid var(--line);}
+  .cis-input-row textarea{
+    width:100%; min-height:110px; background:var(--bg-alt); border:1px solid var(--line); border-radius:4px;
+    color:var(--text); font-family:var(--mono); font-size:12px; padding:10px; resize:vertical; outline:none;
+  }
+  .cis-input-row textarea:focus{border-color:var(--cyan);}
+  .cis-input-row-actions{display:flex; align-items:center; gap:12px; margin-top:10px;}
+  .cis-save-btn{
+    background:var(--cyan-soft); border:1px solid var(--cyan); color:var(--cyan); font-family:var(--mono);
+    font-size:12px; font-weight:700; letter-spacing:0.05em; padding:8px 18px; border-radius:4px; cursor:pointer;
+  }
+  .cis-save-btn:hover{background:rgba(53,212,255,0.24);}
+  .cis-save-status{font-size:11px; color:var(--muted); font-family:var(--mono);}
+  .placeholder code{font-family:var(--mono); color:var(--cyan); background:var(--cyan-soft); padding:1px 5px; border-radius:3px;}
+
+  footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line-dim); font-family:var(--mono); font-size:10px; color:var(--faint); text-align:center; letter-spacing:0.08em;}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:600px){
+    body{padding:16px 12px 40px;}
+    header{padding:14px 16px; gap:10px;}
+    .header-left{gap:10px;}
+    h1{font-size:19px;}
+    .brand-eyebrow{font-size:9px;}
+    .radar{width:44px; height:44px;}
+    .clock{font-size:10px; text-align:left; width:100%;}
+    header{flex-direction:column; align-items:flex-start;}
+
+    .totals{grid-template-columns:1fr 1fr; gap:8px;}
+    .total-cell{padding:12px 12px;}
+    .total-cell .val{font-size:18px;}
+    .stat-block .stat-val{font-size:15px;}
+    .stat-block .stat-val.money{font-size:11px;}
+    .stat-block .stat-label{font-size:9px;}
+
+    .section-head h2{font-size:13px;}
+
+    .board-row, .board-head{grid-template-columns:22px 1fr 74px 74px; gap:6px; padding:9px 12px;}
+    .bar-track{display:none;}
+    .board-head span:nth-child(3){display:none;}
+    .who-name{font-size:12.5px;}
+    .who .dot{width:6px; height:6px;}
+    .amt{font-size:10.5px;}
+    .tag{font-size:8px; padding:1px 4px;}
+
+    .team-card{padding:12px 12px 6px;}
+    .member{font-size:12px; grid-template-columns:1fr 34px 84px;}
+
+    .cis-layout{flex-direction:column; align-items:flex-start; gap:18px;}
+    .cis-chart-wrap{width:160px; height:160px;}
+    .cis-total-num{font-size:24px;}
+
+    .card{padding:14px;}
+    footer{font-size:9px;}
+  }
+</style>
+</head>
+<body>
+<div class="bg-deco" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(53,212,255,0.10)" stroke-width="1"/>
+    <circle cx="1250" cy="120" r="180" fill="none" stroke="rgba(53,212,255,0.14)" stroke-width="1"/>
+    <circle cx="1250" cy="120" r="120" fill="none" stroke="rgba(53,212,255,0.10)" stroke-width="1" stroke-dasharray="3 8"/>
+    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(53,212,255,0.18)" stroke-width="1" stroke-dasharray="1 10"/>
+    <polygon points="120,780 195,738 270,780 270,864 195,906 120,864" fill="none" stroke="rgba(34,196,166,0.16)" stroke-width="1.3"/>
+    <polygon points="80,700 130,672 180,700 180,756 130,784 80,756" fill="none" stroke="rgba(34,196,166,0.10)" stroke-width="1"/>
+    <circle cx="60" cy="80" r="90" fill="none" stroke="rgba(53,212,255,0.09)" stroke-width="1"/>
+    <path d="M0 40 L40 40 L40 0" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
+    <path d="M1440 40 L1400 40 L1400 0" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
+    <path d="M0 860 L40 860 L40 900" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
+    <path d="M1440 860 L1400 860 L1400 900" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
+    <line x1="900" y1="0" x2="900" y2="900" stroke="rgba(53,212,255,0.04)" stroke-width="1"/>
+    <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(53,212,255,0.04)" stroke-width="1"/>
+  </svg>
+</div>
+<div class="wrap">
+
+  <header class="hud-frame">
+    <div class="header-left">
+      <div class="radar">
+        <svg viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="30" fill="none" stroke="rgba(53,212,255,0.25)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="22" fill="none" stroke="rgba(53,212,255,0.35)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="14" fill="none" stroke="rgba(53,212,255,0.5)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="3" fill="#35d4ff"/>
+          <g class="sweep">
+            <path d="M32 32 L32 2 A30 30 0 0 1 55 15 Z" fill="rgba(53,212,255,0.18)"/>
+          </g>
+          <circle cx="32" cy="32" r="30" fill="none" stroke="#35d4ff" stroke-width="1.4" stroke-dasharray="2 6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-eyebrow">SHINHAN LIFE · GEUMGANG BRANCH</div>
+        <h1>최강4팀 <span>관제판</span></h1>
+      </div>
+    </div>
+    <div class="clock">
+      <div>스냅샷 기준 <b>2026.07.14</b></div>
+      <div style="margin-top:4px;">taevis 데이터 연동 · 갱신은 대화창에서 요청</div>
+    </div>
+  </header>
+
+  <div class="totals">
+    <div class="total-cell hud-frame">
+      <div class="label" style="text-align:center;">팀 CMIP</div>
+      <div class="stat-row divided">
+        <div class="stat-block">
+          <div class="stat-label">BP</div>
+          <div class="stat-val money" id="cmip-bp">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">현황</div>
+          <div class="stat-val money" id="cmip-actual">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">달성률</div>
+          <div class="stat-val money" id="cmip-rate">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="total-cell hud-frame">
+      <div class="label" style="text-align:center;">팀 CANP</div>
+      <div class="stat-row divided">
+        <div class="stat-block">
+          <div class="stat-label">BP</div>
+          <div class="stat-val money" id="canp-bp">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">현황</div>
+          <div class="stat-val money" id="canp-actual">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">달성률</div>
+          <div class="stat-val money" id="canp-rate">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="total-cell hud-frame">
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-label">금일 미팅수</div>
+          <div class="stat-val" id="today-meetings">0건</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">금일 CIS수</div>
+          <div class="stat-val" id="today-cis">0건</div>
+        </div>
+      </div>
+    </div>
+    <div class="total-cell hud-frame">
+      <div class="stat-row divided">
+        <div class="stat-block">
+          <div class="stat-label">가동</div>
+          <div class="stat-val" id="cnt-active" style="font-size:16px;">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">정예화</div>
+          <div class="stat-val" id="cnt-elite" style="font-size:16px;">-</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">프리미어</div>
+          <div class="stat-val" id="cnt-premier" style="font-size:16px;">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">01</span><h2>CMIP · CANP 리더보드</h2><div class="rule"></div>
+  </div>
+  <div class="board hud-frame">
+    <div class="board-head"><span></span><span>이름</span><span>CMIP</span><span>CMIP 금액</span><span>CANP 금액</span></div>
+    <div id="board-canp"></div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">02</span><h2>팀별 업적 현황</h2><div class="rule"></div>
+  </div>
+  <div class="teams">
+    <div class="team-card peacock hud-frame">
+      <div class="team-title"><span class="name">곽태허팀</span></div>
+      <div id="list-peacock"></div>
+    </div>
+    <div class="team-card banana hud-frame">
+      <div class="team-title"><span class="name">박기현팀</span></div>
+      <div id="list-banana"></div>
+    </div>
+    <div class="team-card tangerine hud-frame">
+      <div class="team-title"><span class="name">직할팀</span></div>
+      <div id="list-tangerine"></div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">03</span><h2>CIS 누적 현황</h2><div class="rule"></div>
+  </div>
+  <div class="card hud-frame">
+    <div class="cis-layout">
+      <div class="cis-chart-wrap">
+        <svg id="cis-donut" viewBox="0 0 200 200"></svg>
+        <div class="cis-total">
+          <div class="cis-total-num" id="cis-total-num">0</div>
+          <div class="cis-total-label">누적 CIS</div>
+        </div>
+      </div>
+      <div class="cis-legend" id="cis-legend"></div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">04</span><h2>월간 지점 · 팀 일정</h2><div class="rule"></div>
+  </div>
+  <div class="card hud-frame">
+    <div id="sched-list"></div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">05</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
+  </div>
+  <div class="card hud-frame">
+    <div class="placeholder">
+      MDRT · 뉴스타 · 파트너스클럽 · SL승진 진도는 인원별 개별 조회(<code>check_mdrt</code>, <code>check_new_star</code> 등)라 22명 전체를 한 화면에 미리 채워두면 부정확할 수 있어요.<br><br>
+      대화창에서 "<b>MDRT 진도 전체 뽑아줘</b>" 처럼 요청하시면 최신 값으로 이 섹션을 채운 갱신본을 다시 드릴게요.
+    </div>
+  </div>
+
+  <footer>TAEVIS DASHBOARD · 문태양 전용 · 데이터는 요청 시점 스냅샷입니다</footer>
+</div>
+
+<script>
+// 금일 미팅수 / CIS수 — 문태양님이 알려주시는 값으로 여기만 고쳐서 갱신
+// 팀 월간 BP(할당량) — 매달 여기 숫자만 고쳐서 갱신
+const TEAM_BP = { cmip: 12000000, canp: 100000000 };
+const TEAM_ACTUAL = { cmip: 6178438, canp: 37985032 };
+document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
+document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
+document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
+document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString()}원`;
+document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
+document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
+
+const TODAY_STATS = { meetings: 0, cis: 0 };
+document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
+document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
+
+const CANP = [
+  {name:'곽태허', team:'peacock', canp:12310300, cmip:2053192, count:5},
+  {name:'문태양', team:'graphite', canp:9206246, cmip:1252684, count:5},
+  {name:'박기현', team:'banana', canp:3360000, cmip:1000000, count:2},
+  {name:'진준영', team:'peacock', canp:7532938, cmip:853192, count:2},
+  {name:'박진균', team:'peacock', canp:2268268, cmip:451136, count:1},
+  {name:'박재언', team:'tangerine', canp:1849036, cmip:355108, count:1},
+  {name:'김주상', team:'banana', canp:990628, cmip:150262, count:1},
+  {name:'한승희', team:'peacock', canp:467616, cmip:62864, count:2},
+].map(d=>({
+  ...d,
+  elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
+  premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
+})).sort((a,b)=>b.cmip-a.cmip);
+
+const TEAM_LABEL = {peacock:'곽태허팀', banana:'박기현팀', tangerine:'직할팀', graphite:'문태양'};
+
+const TEAMS = {
+  peacock: ['곽태허','구은성','이혜지','한승희','장민지','김예담','임이지','박진균','진준영','박시온'],
+  banana: ['박기현','문지선','전찬호','이수연','유수진','권지선','김덕철','김주상'],
+  tangerine: ['오우석','윤혜연','차정음','이석호','임규찬','지현철','박재언'],
+};
+
+const canpMap = Object.fromEntries(CANP.map(d=>[d.name,d]));
+const TOTAL_HEADCOUNT = Object.values(TEAMS).reduce((s,arr)=>s+arr.length,0) + 1; // +1 = 문태양
+const activeN = CANP.filter(d=>d.count>=1).length;
+const eliteN = CANP.filter(d=>d.elite).length;
+const premierN = CANP.filter(d=>d.premier).length;
+document.getElementById('cnt-active').textContent = `${activeN}명 / ${(activeN/TOTAL_HEADCOUNT*100).toFixed(0)}%`;
+document.getElementById('cnt-elite').textContent = `${eliteN}명 / ${(eliteN/TOTAL_HEADCOUNT*100).toFixed(0)}%`;
+document.getElementById('cnt-premier').textContent = `${premierN}명 / ${(premierN/TOTAL_HEADCOUNT*100).toFixed(0)}%`;
+const maxCmip = Math.max(...CANP.map(d=>d.cmip));
+
+const board = document.getElementById('board-canp');
+CANP.slice(0,5).forEach((d,i)=>{
+  const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  const pct = (d.cmip/maxCmip*100).toFixed(0);
+  const row = document.createElement('div');
+  row.className='board-row';
+  row.innerHTML = `
+    <div class="rank ${rankClass}">${i+1}</div>
+    <div class="who">
+      <span class="dot ${d.team}"></span>
+      <div>
+        <div class="who-name">${d.name}${d.premier?`<span class="tag" style="background:var(--banana-soft);color:var(--banana);">프리미어</span>`:(d.elite?`<span class="tag" style="background:var(--peacock-soft);color:var(--peacock);">정예화</span>`:'')}</div>
+      </div>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:var(--${d.team}); color:var(--${d.team});"></div></div>
+    <div class="amt">${d.cmip.toLocaleString()}<span class="unit">원</span></div>
+    <div class="amt">${d.canp.toLocaleString()}<span class="unit">원</span></div>
+  `;
+  board.appendChild(row);
+});
+
+const TENURE = {
+  '구은성':13, '이혜지':10, '장민지':12, '김예담':10, '임이지':3, '박시온':12,
+  '문지선':6, '전찬호':3, '이수연':5, '유수진':5, '권지선':3, '김덕철':11,
+  '오우석':14, '윤혜연':12, '차정음':12, '이석호':14, '임규찬':13, '지현철':4,
+};
+
+Object.entries(TEAMS).forEach(([teamKey, members])=>{
+  const list = document.getElementById(`list-${teamKey}`);
+
+  const withPerf = members.filter(n=>canpMap[n]).sort((a,b)=>canpMap[b].cmip - canpMap[a].cmip);
+  const ordered = withPerf;
+
+  ordered.forEach(name=>{
+    const data = canpMap[name];
+    const row = document.createElement('div');
+    row.className='member';
+    row.innerHTML = `
+      <span class="m-name ${data?'':'zero'}">${name}</span>
+      <span class="m-canp ${data?'has':''}">${data? `<span class="m-label">CMIP</span><span class="m-amt has">${data.cmip.toLocaleString()}원</span>` : `<span class="m-label"></span><span class="m-amt">실적 없음</span>`}</span>
+    `;
+    list.appendChild(row);
+  });
+});
+
+// 여기는 개인 미팅이 아니라 지점/팀 행사·교육 공지용입니다. 알려주시면 이 배열에 추가할게요.
+const SCHEDULES = [
+  {date:'07/15', title:'박기현팀 회식'},
+  {date:'07/20', title:'오우석 박재언 회식'},
+  {date:'07/27', title:'곽태허팀 회식'},
+];
+const schedWrap = document.getElementById('sched-list');
+if(SCHEDULES.length===0){
+  schedWrap.innerHTML = `<div class="empty-note">등록된 지점·팀 일정이 없습니다.</div>`;
+}else{
+  SCHEDULES.forEach(s=>{
+    const row = document.createElement('div');
+    row.className='sched-item';
+    row.innerHTML = `<span class="sched-date">${s.date}</span><span class="sched-title">${s.title}</span>`;
+    schedWrap.appendChild(row);
+  });
+}
+
+// ---------- CIS 누적 현황 ----------
+function getTeamOf(name){
+  if(name==='문태양') return 'graphite';
+  for(const t in TEAMS){ if(TEAMS[t].includes(name)) return t; }
+  return null;
+}
+
+function parseCISText(text){
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  let currentDate = null;
+  const dateRe = /^(\d{1,2})\/(\d{1,2})$/;
+  const entryRe = /^(\d{1,2}:\d{2})\s+(\S+)\s*-\s*(.+?)OT\s*$/;
+  const entries = [];
+  lines.forEach(line=>{
+    const dm = line.match(dateRe);
+    if(dm){ currentDate = `${dm[1].padStart(2,'0')}/${dm[2].padStart(2,'0')}`; return; }
+    const em = line.match(entryRe);
+    if(em){ entries.push({date:currentDate, time:em[1], candidate:em[2], fc:em[3].trim()}); }
+  });
+  return entries;
+}
+
+function renderCIS(entries){
+  const counts = {};
+  entries.forEach(e=>{ counts[e.fc] = (counts[e.fc]||0)+1; });
+  const total = entries.length;
+  document.getElementById('cis-total-num').textContent = total;
+
+  const svg = document.getElementById('cis-donut');
+  const r=80, cx=100, cy=100, sw=22;
+  const circumference = 2*Math.PI*r;
+  let html = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${sw}"/>`;
+
+  const names = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  const colorOf = n=>{ const t=getTeamOf(n); return t ? `var(--${t})` : 'var(--cyan)'; };
+
+  let offset = 0;
+  names.forEach(name=>{
+    const len = (counts[name]/total)*circumference;
+    html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${colorOf(name)}" stroke-width="${sw}"
+      stroke-dasharray="${len} ${circumference-len}" stroke-dashoffset="${-offset}"
+      transform="rotate(-90 ${cx} ${cy})" style="filter:drop-shadow(0 0 5px ${colorOf(name)});"/>`;
+    offset += len;
+  });
+  svg.innerHTML = html;
+
+  const legend = document.getElementById('cis-legend');
+  if(total===0){
+    legend.innerHTML = `<div class="empty-note">아직 등록된 CIS 데이터가 없습니다.</div>`;
+  }else{
+    legend.innerHTML = names.map(name=>`
+      <div class="cis-legend-item">
+        <span class="cis-dot" style="background:${colorOf(name)}; color:${colorOf(name)};"></span>
+        <span class="cis-legend-name">${name}</span>
+        <span class="cis-legend-count">${counts[name]}건 · ${(counts[name]/total*100).toFixed(0)}%</span>
+      </div>
+    `).join('');
+  }
+}
+
+// CIS 데이터 — 문태양님이 채팅으로 알려주시면 여기 배열에 추가해서 갱신
+const CIS_ENTRIES = [
+];
+renderCIS(CIS_ENTRIES);
+</script>
+</body>
+</html>
