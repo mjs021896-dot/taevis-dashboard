@@ -542,16 +542,26 @@ Object.entries(TEAMS).forEach(([teamKey, members])=>{
 const SCHEDULES = [
   {date:'07/15', title:'박기현팀 회식'},
   {date:'07/20', title:'오우석 박재언 회식'},
+  {date:'07/20', title:'13차월 미만 FC 교육'},
   {date:'07/27', title:'곽태허팀 회식'},
 ];
 const schedWrap = document.getElementById('sched-list');
 if(SCHEDULES.length===0){
   schedWrap.innerHTML = `<div class="empty-note">등록된 지점·팀 일정이 없습니다.</div>`;
 }else{
+  // 같은 날짜는 뱃지 하나로 묶고, 일정들을 줄바꿈으로 나열
+  const grouped = {};
+  const order = [];
   SCHEDULES.forEach(s=>{
+    if(!grouped[s.date]){ grouped[s.date] = []; order.push(s.date); }
+    grouped[s.date].push(s.title);
+  });
+  order.forEach(date=>{
     const row = document.createElement('div');
     row.className='sched-item';
-    row.innerHTML = `<span class="sched-date">${s.date}</span><span class="sched-title">${s.title}</span>`;
+    row.style.alignItems='flex-start';
+    const titles = grouped[date].map(t=>`<div class="sched-title">${t}</div>`).join('');
+    row.innerHTML = `<span class="sched-date">${date}</span><div style="display:flex; flex-direction:column; gap:5px;">${titles}</div>`;
     schedWrap.appendChild(row);
   });
 }
