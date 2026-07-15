@@ -204,42 +204,72 @@
 
   footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line-dim); font-family:var(--mono); font-size:10px; color:var(--faint); text-align:center; letter-spacing:0.08em;}
 
-  /* ---------- Mobile ---------- */
+  /* ---------- Responsive ----------
+     전략:
+     1) 1100px~: 기본 레이아웃
+     2) ~1100px: 요소·글자를 단계적으로 축소 (레이아웃 유지)
+     3) ~840px: 금액 텍스트가 줄바꿈될 정도로 좁아지기 전에 요약칸을 세로(1열)로 펼침
+     4) ~600px: 모바일 - 전부 세로 스택, 가로 스크롤 완전 차단
+  ---------------------------------- */
+  html, body{max-width:100%; overflow-x:hidden;}
+  *{min-width:0;}
+
+  /* 단계 2: 완만한 축소 */
+  @media (max-width:1100px){
+    .total-cell .val{font-size:19px;}
+    .stat-block .stat-val{font-size:17px;}
+    .stat-block .stat-val.money{font-size:12.5px;}
+    .amt{font-size:12px;}
+  }
+
+  /* 단계 3: 금액 줄바꿈 직전 - 요약칸을 아래로 펼침 */
+  @media (max-width:840px){
+    .totals{grid-template-columns:1fr; gap:10px;}
+    .total-cell .val{font-size:21px;}
+    .stat-block .stat-val{font-size:18px;}
+    .stat-block .stat-val.money{font-size:14px;}
+    .teams{grid-template-columns:1fr;}
+  }
+
+  /* 단계 4: 모바일 */
   @media (max-width:600px){
     body{padding:16px 12px 40px;}
-    header{padding:14px 16px; gap:10px;}
+    header{padding:14px 16px; gap:10px; flex-direction:column; align-items:flex-start;}
     .header-left{gap:10px;}
     h1{font-size:19px;}
     .brand-eyebrow{font-size:9px;}
     .radar{width:44px; height:44px;}
     .clock{font-size:10px; text-align:left; width:100%;}
-    header{flex-direction:column; align-items:flex-start;}
 
-    .totals{grid-template-columns:1fr 1fr; gap:8px;}
+    .totals{grid-template-columns:1fr; gap:8px;}
     .total-cell{padding:12px 12px;}
     .total-cell .val{font-size:18px;}
     .stat-block .stat-val{font-size:15px;}
-    .stat-block .stat-val.money{font-size:11px;}
+    .stat-block .stat-val.money{font-size:12px;}
     .stat-block .stat-label{font-size:9px;}
 
     .section-head h2{font-size:13px;}
 
-    .board-row, .board-head{grid-template-columns:22px 1fr 74px 74px; gap:6px; padding:9px 12px;}
+    .board-row, .board-head{grid-template-columns:22px minmax(0,1fr) 74px 74px; gap:6px; padding:9px 12px;}
     .bar-track{display:none;}
     .board-head span:nth-child(3){display:none;}
-    .who-name{font-size:12.5px;}
+    .who-name{font-size:12.5px; overflow-wrap:anywhere;}
     .who .dot{width:6px; height:6px;}
-    .amt{font-size:10.5px;}
+    .amt{font-size:10.5px; white-space:nowrap;}
     .tag{font-size:8px; padding:1px 4px;}
 
     .team-card{padding:12px 12px 6px;}
-    .member{font-size:12px; grid-template-columns:1fr 34px 84px;}
+    .member{font-size:12px; grid-template-columns:minmax(0,1fr) 34px 84px;}
+    .member .m-amt{white-space:nowrap;}
 
-    .cis-layout{flex-direction:column; align-items:flex-start; gap:18px;}
-    .cis-chart-wrap{width:160px; height:160px;}
+    .cis-layout{flex-direction:column; align-items:center; gap:18px;}
+    .cis-chart-wrap{width:min(160px, 60vw); height:min(160px, 60vw);}
+    .cis-legend{width:100%;}
     .cis-total-num{font-size:24px;}
 
+    .sched-item{flex-wrap:wrap;}
     .card{padding:14px;}
+    .bg-deco{display:none;}
     footer{font-size:9px;}
   }
 </style>
@@ -438,7 +468,7 @@ document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5.0}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2.0}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
@@ -587,7 +617,7 @@ function renderCIS(entries){
 
 // CIS 데이터 — 문태양님이 채팅으로 알려주시면 여기 배열에 추가해서 갱신
 // CIS 데이터는 서버(dashboard.py)가 구글시트 CIS로그 실시간 값으로 매 요청마다 치환합니다.
-const CIS_ENTRIES = [{"date": "", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}];
+const CIS_ENTRIES = [{"date": "07/02", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}];
 renderCIS(CIS_ENTRIES);
 </script>
 </body>
