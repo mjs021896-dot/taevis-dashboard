@@ -214,20 +214,19 @@
   html, body{max-width:100%; overflow-x:hidden;}
   *{min-width:0;}
 
-  /* 단계 2: 완만한 축소 */
+  /* 단계 2: 요약칸(totals)은 폰트를 줄이는 대신 일찍 2x2로 재배치 (글자 겹침 방지) */
+  @media (max-width:1250px){
+    .totals{grid-template-columns:1fr 1fr;}
+  }
   @media (max-width:1100px){
-    .total-cell .val{font-size:19px;}
-    .stat-block .stat-val{font-size:17px;}
-    .stat-block .stat-val.money{font-size:12.5px;}
     .amt{font-size:12px;}
   }
 
-  /* 단계 3: 금액 줄바꿈 직전 - 요약칸을 아래로 펼침 */
-  @media (max-width:840px){
+  /* 단계 3: 더 좁아지면 요약칸 1열, 팀 카드도 세로 */
+  @media (max-width:680px){
     .totals{grid-template-columns:1fr; gap:10px;}
-    .total-cell .val{font-size:21px;}
-    .stat-block .stat-val{font-size:18px;}
-    .stat-block .stat-val.money{font-size:14px;}
+  }
+  @media (max-width:840px){
     .teams{grid-template-columns:1fr;}
   }
 
@@ -243,10 +242,7 @@
 
     .totals{grid-template-columns:1fr; gap:8px;}
     .total-cell{padding:12px 12px;}
-    .total-cell .val{font-size:18px;}
-    .stat-block .stat-val{font-size:15px;}
-    .stat-block .stat-val.money{font-size:12px;}
-    .stat-block .stat-label{font-size:9px;}
+    .stat-block .stat-label{font-size:10px;}
 
     .section-head h2{font-size:13px;}
 
