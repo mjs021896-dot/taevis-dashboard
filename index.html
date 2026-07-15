@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>금강지점 최강4팀 — 관제판</title>
+<title>금강지점 최강4팀 — DashBoard</title>
 <style>
   :root{
     --bg: #05080d;
@@ -96,7 +96,8 @@
   .stat-row.divided .stat-block:not(:first-child){border-left:1px solid var(--line); padding-left:10px;}
   .stat-block .stat-label{font-size:11px; color:var(--muted); letter-spacing:0.05em; margin-bottom:6px;}
   .stat-block .stat-val{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
-  .stat-block .stat-val.money{font-size:14px;}
+  .total-cell{container-type:inline-size;}
+  .stat-block .stat-val.money{font-size:clamp(9px, 4.2cqw, 14px); white-space:nowrap;}
   .stat-block .stat-rate{font-family:var(--mono); font-size:10px; color:var(--faint); margin-top:3px;}
   .total-cell .val{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
   .total-cell .sub{font-size:11px; color:var(--faint); margin-top:4px;}
@@ -305,13 +306,13 @@
         </svg>
       </div>
       <div>
-        <div class="brand-eyebrow">SHINHAN LIFE · GEUMGANG BRANCH</div>
-        <h1>최강4팀 <span>관제판</span></h1>
+        <div class="brand-eyebrow">SHINHAN LIFE · KUMKANG BRANCH</div>
+        <h1>최강4팀 <span>DashBoard</span></h1>
       </div>
     </div>
     <div class="clock">
-      <div>스냅샷 기준 <b>2026.07.14</b></div>
-      <div style="margin-top:4px;">taevis 데이터 연동 · 갱신은 대화창에서 요청</div>
+      <div>Today <b id="today-date"></b></div>
+      <div style="margin-top:4px;">아직 열심히 살지 않을 이유를 찾지 못했다 -김가람-</div>
     </div>
   </header>
 
@@ -438,10 +439,7 @@
     <span class="idx">05</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
-    <div class="placeholder">
-      MDRT · 뉴스타 · 파트너스클럽 · SL승진 진도는 인원별 개별 조회(<code>check_mdrt</code>, <code>check_new_star</code> 등)라 22명 전체를 한 화면에 미리 채워두면 부정확할 수 있어요.<br><br>
-      대화창에서 "<b>MDRT 진도 전체 뽑아줘</b>" 처럼 요청하시면 최신 값으로 이 섹션을 채운 갱신본을 다시 드릴게요.
-    </div>
+    <div style="text-align:center; padding:40px 0; font-size:22px; font-weight:700; color:var(--muted); letter-spacing:0.1em;">준비중</div>
   </div>
 
   <footer>TAEVIS DASHBOARD · 문태양 전용 · 데이터는 요청 시점 스냅샷입니다</footer>
@@ -450,6 +448,13 @@
 <script>
 // 금일 미팅수 / CIS수 — 문태양님이 알려주시는 값으로 여기만 고쳐서 갱신
 // 팀 월간 BP(할당량) — 매달 여기 숫자만 고쳐서 갱신
+// 오늘 날짜 자동 표시
+{
+  const d = new Date();
+  document.getElementById('today-date').textContent =
+    `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
 const TEAM_BP = { cmip: 12000000, canp: 100000000 };
 const TEAM_ACTUAL = {"cmip": 6178438, "canp": 37985032};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
