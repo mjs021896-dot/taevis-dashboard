@@ -191,6 +191,27 @@
   .policy-badge{font-family:var(--mono); font-size:11px; text-align:center;}
   .policy-badge.done{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
   .policy-badge.blocked{color:var(--faint);}
+  .policy-winners{
+    border:1px solid rgba(255,210,63,0.4); border-radius:4px;
+    background:linear-gradient(135deg, rgba(255,210,63,0.10), rgba(255,210,63,0.03));
+    padding:14px 16px; margin-bottom:16px;
+    box-shadow:0 0 18px rgba(255,210,63,0.10) inset;
+  }
+  .policy-winners-title{
+    font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.12em;
+    color:var(--banana); text-shadow:0 0 10px rgba(255,210,63,0.5); margin-bottom:10px;
+  }
+  .policy-winners-names{display:flex; flex-wrap:wrap; gap:10px;}
+  .policy-winner{
+    font-size:15px; font-weight:700; color:var(--banana);
+    text-shadow:0 0 12px rgba(255,210,63,0.55);
+    background:rgba(255,210,63,0.12); border:1px solid rgba(255,210,63,0.35);
+    padding:6px 14px; border-radius:4px;
+  }
+  .policy-sub-title{
+    font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.1em;
+    margin:4px 0 6px; text-transform:uppercase;
+  }
   @media (max-width:600px){
     .policy-row{grid-template-columns:minmax(0,60px) 1fr 108px 44px; gap:6px; font-size:12px;}
     .policy-amt{font-size:9.5px;}
@@ -495,12 +516,12 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 1};
+const TODAY_STATS = {"meetings": 0, "cis": 0};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5.0}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2.0}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
@@ -570,10 +591,8 @@ Object.entries(TEAMS).forEach(([teamKey, members])=>{
 });
 
 // 여기는 개인 미팅이 아니라 지점/팀 행사·교육 공지용입니다. 알려주시면 이 배열에 추가할게요.
-const SCHEDULES = [
-  {date:'07/20', title:'13차월 미만 FC 교육'},
-  {date:'07/27', title:'13차월 이상 FC 버즈'},
-];
+// 일정은 data/dashboard_schedules.json에서 서버가 매 발행마다 치환합니다.
+const SCHEDULES = [{"date": "07/20", "title": "13차월 미만 FC 교육"}, {"date": "07/27", "title": "13차월 이상 FC 버즈"}];
 const schedWrap = document.getElementById('sched-list');
 if(SCHEDULES.length===0){
   schedWrap.innerHTML = `<div class="empty-note">등록된 지점·팀 일정이 없습니다.</div>`;
@@ -657,7 +676,7 @@ function renderCIS(entries){
 
 // CIS 데이터 — 문태양님이 채팅으로 알려주시면 여기 배열에 추가해서 갱신
 // CIS 데이터는 서버(dashboard.py)가 구글시트 CIS로그 실시간 값으로 매 요청마다 치환합니다.
-const CIS_ENTRIES = [{"date": "", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}, {"date": "07/16", "time": "13:00", "candidate": "민은주", "fc": "박기현"}, {"date": "07/17", "time": "12:00", "candidate": "최서율", "fc": "박기현"}, {"date": "07/21", "time": "13:00", "candidate": "김다은", "fc": "박기현"}];
+const CIS_ENTRIES = [{"date": "07/02", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}];
 renderCIS(CIS_ENTRIES);
 
 // ---------- 시책 현황 (미니썸머) ----------
@@ -671,22 +690,36 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 2053192, 
     return;
   }
   const TARGET = 1500000; // 진행률 바 기준(정규 목표)
-  const rows = [...POLICY_ENTRIES].sort((a,b)=>b.total-a.total);
+  const winners = POLICY_ENTRIES.filter(p=>p.achieved).sort((a,b)=>b.total-a.total);
+  const inProgress = POLICY_ENTRIES.filter(p=>!p.achieved).sort((a,b)=>b.total-a.total);
 
-  wrap.innerHTML = rows.map(p=>{
-    const pct = Math.min(100, (p.total/TARGET*100)).toFixed(0);
-    const color = p.achieved ? 'var(--banana)' : 'var(--cyan)';
-    const badge = p.achieved
-      ? `<span class="policy-badge done">✈️ 달성</span>`
-      : `<span class="policy-badge" style="color:var(--muted);">${p.gap>0 ? '-'+p.gap.toLocaleString() : pct+'%'}</span>`;
-    return `
-      <div class="policy-row">
-        <span class="policy-name">${p.name}</span>
-        <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:${color}; color:${color};"></div></div>
-        <span class="policy-amt"><b>${p.total.toLocaleString()}</b> / 1,500,000원</span>
-        ${badge}
+  let html = '';
+
+  if(winners.length){
+    html += `
+      <div class="policy-winners">
+        <div class="policy-winners-title">🏆 달성자</div>
+        <div class="policy-winners-names">
+          ${winners.map(p=>`<span class="policy-winner">✈️ ${p.name}</span>`).join('')}
+        </div>
       </div>`;
-  }).join('');
+  }
+
+  if(inProgress.length){
+    html += `<div class="policy-sub-title">진행 중</div>`;
+    html += inProgress.map(p=>{
+      const pct = Math.min(100, (p.total/TARGET*100)).toFixed(0);
+      return `
+        <div class="policy-row">
+          <span class="policy-name">${p.name}</span>
+          <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
+          <span class="policy-amt"><b>${p.total.toLocaleString()}</b> / 1,500,000원</span>
+          <span class="policy-badge" style="color:var(--muted);">${p.gap>0 ? '-'+p.gap.toLocaleString() : pct+'%'}</span>
+        </div>`;
+    }).join('');
+  }
+
+  wrap.innerHTML = html;
 })();
 </script>
 </body>
