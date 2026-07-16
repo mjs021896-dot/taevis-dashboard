@@ -682,7 +682,7 @@ renderCIS(CIS_ENTRIES);
 // ---------- 시책 현황 (미니썸머) ----------
 // 서버(dashboard.py)가 taevis policy 로직으로 계산한 값 그대로 치환:
 // [{name, june, july, total, achieved, gap}, ...]
-const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 2053192, "total": 3496277, "achieved": true, "gap": 0}, {"name": "박기현", "june": 601004, "july": 1000000, "total": 1601004, "achieved": true, "gap": 0}, {"name": "한승희", "june": 100314, "july": 62864, "total": 163178, "achieved": false, "gap": 1437136}, {"name": "박재언", "june": 762116, "july": 355108, "total": 1117224, "achieved": false, "gap": 382776}, {"name": "진준영", "june": 581638, "july": 853192, "total": 1434830, "achieved": false, "gap": 65170}, {"name": "임이지", "june": 396234, "july": 0, "total": 396234, "achieved": false, "gap": 1403766}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0}, {"name": "김주상", "june": 321799, "july": 150262, "total": 472061, "achieved": false, "gap": 1327939}];
+const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 2053192, "total": 3496277, "achieved": true, "gap": 0, "progress": 3496277, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1000000, "total": 1601004, "achieved": true, "gap": 0, "progress": 1601004, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 62864, "total": 163178, "achieved": false, "gap": 1437136, "progress": 62864, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 355108, "total": 1117224, "achieved": false, "gap": 382776, "progress": 1117224, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 853192, "total": 1434830, "achieved": false, "gap": 65170, "progress": 1434830, "target": 1500000}, {"name": "임이지", "june": 396234, "july": 0, "total": 396234, "achieved": false, "gap": 1403766, "progress": 396234, "target": 1800000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 150262, "total": 472061, "achieved": false, "gap": 1327939, "progress": 472061, "target": 1800000}];
 (function renderPolicy(){
   const wrap = document.getElementById('policy-list');
   if(!POLICY_ENTRIES || POLICY_ENTRIES.length===0){
@@ -706,14 +706,17 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 2053192, 
   }
 
   if(inProgress.length){
-    html += `<div class="policy-sub-title">진행 중</div>`;
+    html += `<div class="policy-sub-title">진행 중 (본인에게 가장 유리한 달성 경로 기준)</div>`;
     html += inProgress.map(p=>{
-      const pct = Math.min(100, (p.total/TARGET*100)).toFixed(0);
+      const prog = p.progress !== undefined ? p.progress : p.total;
+      const tgt = p.target !== undefined ? p.target : TARGET;
+      const pct = Math.min(100, (prog/tgt*100)).toFixed(0);
+      const pathLabel = tgt === 1800000 ? '합산' : (prog === p.july && p.june < 500000 ? '7월 단독' : '합산');
       return `
         <div class="policy-row">
           <span class="policy-name">${p.name}</span>
           <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
-          <span class="policy-amt"><b>${p.total.toLocaleString()}</b> / 1,500,000원</span>
+          <span class="policy-amt"><b>${prog.toLocaleString()}</b> / ${tgt.toLocaleString()}원 <span style="color:var(--faint);">(${pathLabel})</span></span>
           <span class="policy-badge" style="color:var(--muted);">${p.gap>0 ? '-'+p.gap.toLocaleString() : pct+'%'}</span>
         </div>`;
     }).join('');
