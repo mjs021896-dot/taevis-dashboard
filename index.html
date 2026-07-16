@@ -176,6 +176,26 @@
   .empty-note{color:var(--faint); font-size:12px;}
   .placeholder{border:1px dashed var(--line); border-radius:4px; padding:14px; font-size:12px; color:var(--muted); line-height:1.7; background:rgba(0,0,0,0.2);}
 
+  /* ---------- Policy (시책) ---------- */
+  .policy-row{
+    display:grid; grid-template-columns:minmax(0,72px) 1fr 150px 60px; gap:12px; align-items:center;
+    padding:10px 4px; border-bottom:1px dashed var(--line-dim); font-size:13px;
+  }
+  .policy-row:last-child{border-bottom:none;}
+  .policy-name{font-weight:600; overflow-wrap:anywhere;}
+  .policy-name.fail{color:var(--faint);}
+  .policy-bar-track{height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;}
+  .policy-bar-fill{height:100%; border-radius:3px; box-shadow:0 0 8px currentColor;}
+  .policy-amt{font-family:var(--mono); font-size:11.5px; color:var(--muted); text-align:right; white-space:nowrap;}
+  .policy-amt b{color:var(--text); font-weight:600;}
+  .policy-badge{font-family:var(--mono); font-size:11px; text-align:center;}
+  .policy-badge.done{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
+  .policy-badge.blocked{color:var(--faint);}
+  @media (max-width:600px){
+    .policy-row{grid-template-columns:minmax(0,60px) 1fr 108px 44px; gap:6px; font-size:12px;}
+    .policy-amt{font-size:9.5px;}
+  }
+
   /* ---------- CIS donut ---------- */
   .cis-layout{display:flex; gap:32px; align-items:center; flex-wrap:wrap;}
   .cis-chart-wrap{position:relative; width:200px; height:200px; flex-shrink:0;}
@@ -436,7 +456,18 @@
 
   <div class="section-head">
     <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
-    <span class="idx">05</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
+    <span class="idx">05</span><h2>시책 현황 — 미니썸머</h2><div class="rule"></div>
+  </div>
+  <div class="card hud-frame">
+    <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:14px;">
+      기간 2026-06-01 ~ 2026-07-31 · 정규: 6월 50만↑ + 합산 150만↑ / 추가: 합산 180만↑ 또는 7월 단독 150만↑ → 제주
+    </div>
+    <div id="policy-list"></div>
+  </div>
+
+  <div class="section-head">
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <span class="idx">06</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
     <div style="text-align:center; padding:40px 0; font-size:22px; font-weight:700; color:var(--muted); letter-spacing:0.1em;">준비중</div>
@@ -464,12 +495,12 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 1};
+const TODAY_STATS = {"meetings": 0, "cis": 0};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5.0}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2.0}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 12310300, "cmip": 2053192, "count": 5}, {"name": "문태양", "team": "graphite", "canp": 9206246, "cmip": 1252684, "count": 5}, {"name": "박기현", "team": "banana", "canp": 3360000, "cmip": 1000000, "count": 2}, {"name": "진준영", "team": "peacock", "canp": 7532938, "cmip": 853192, "count": 2}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1}, {"name": "한승희", "team": "peacock", "canp": 467616, "cmip": 62864, "count": 2}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
@@ -626,8 +657,37 @@ function renderCIS(entries){
 
 // CIS 데이터 — 문태양님이 채팅으로 알려주시면 여기 배열에 추가해서 갱신
 // CIS 데이터는 서버(dashboard.py)가 구글시트 CIS로그 실시간 값으로 매 요청마다 치환합니다.
-const CIS_ENTRIES = [{"date": "", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}, {"date": "07/16", "time": "13:00", "candidate": "민은주", "fc": "박기현"}, {"date": "07/17", "time": "12:00", "candidate": "최서율", "fc": "박기현"}, {"date": "07/21", "time": "13:00", "candidate": "김다은", "fc": "박기현"}];
+const CIS_ENTRIES = [{"date": "07/02", "time": "14:00", "candidate": "정기훈", "fc": "박진균"}, {"date": "07/07", "time": "19:00", "candidate": "손이현", "fc": "문태양"}, {"date": "07/09", "time": "14:00", "candidate": "배재은", "fc": "곽태허"}, {"date": "07/10", "time": "13:00", "candidate": "양영필", "fc": "박기현"}, {"date": "07/10", "time": "14:00", "candidate": "박준용", "fc": "곽태허"}, {"date": "07/10", "time": "14:30", "candidate": "이상민", "fc": "곽태허"}, {"date": "07/10", "time": "15:00", "candidate": "유은희", "fc": "곽태허"}, {"date": "07/10", "time": "17:00", "candidate": "박지현", "fc": "문태양"}];
 renderCIS(CIS_ENTRIES);
+
+// ---------- 시책 현황 (미니썸머) ----------
+// 서버(dashboard.py)가 taevis policy 로직으로 계산한 값 그대로 치환:
+// [{name, june, july, total, achieved, gap}, ...]
+const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 2053192, "total": 3496277, "achieved": true, "gap": 0}, {"name": "박기현", "june": 601004, "july": 1000000, "total": 1601004, "achieved": true, "gap": 0}, {"name": "한승희", "june": 100314, "july": 62864, "total": 163178, "achieved": false, "gap": 1437136}, {"name": "박재언", "june": 762116, "july": 355108, "total": 1117224, "achieved": false, "gap": 382776}, {"name": "진준영", "june": 581638, "july": 853192, "total": 1434830, "achieved": false, "gap": 65170}, {"name": "임이지", "june": 396234, "july": 0, "total": 396234, "achieved": false, "gap": 1403766}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0}, {"name": "김주상", "june": 321799, "july": 150262, "total": 472061, "achieved": false, "gap": 1327939}];
+(function renderPolicy(){
+  const wrap = document.getElementById('policy-list');
+  if(!POLICY_ENTRIES || POLICY_ENTRIES.length===0){
+    wrap.innerHTML = `<div class="empty-note">시책 데이터가 없습니다.</div>`;
+    return;
+  }
+  const TARGET = 1500000; // 진행률 바 기준(정규 목표)
+  const rows = [...POLICY_ENTRIES].sort((a,b)=>b.total-a.total);
+
+  wrap.innerHTML = rows.map(p=>{
+    const pct = Math.min(100, (p.total/TARGET*100)).toFixed(0);
+    const color = p.achieved ? 'var(--banana)' : 'var(--cyan)';
+    const badge = p.achieved
+      ? `<span class="policy-badge done">✈️ 달성</span>`
+      : `<span class="policy-badge" style="color:var(--muted);">${p.gap>0 ? '-'+p.gap.toLocaleString() : pct+'%'}</span>`;
+    return `
+      <div class="policy-row">
+        <span class="policy-name">${p.name}</span>
+        <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:${color}; color:${color};"></div></div>
+        <span class="policy-amt"><b>${p.total.toLocaleString()}</b> / 1,500,000원</span>
+        ${badge}
+      </div>`;
+  }).join('');
+})();
 </script>
 </body>
 </html>
