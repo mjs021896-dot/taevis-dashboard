@@ -516,7 +516,7 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 1};
+const TODAY_STATS = {"meetings": 0, "cis": 0};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
