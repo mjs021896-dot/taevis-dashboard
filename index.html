@@ -508,7 +508,7 @@
 }
 
 const TEAM_BP = { cmip: 12000000, canp: 100000000 };
-const TEAM_ACTUAL = {"cmip": 7695007, "canp": 39043896};
+const TEAM_ACTUAL = {"cmip": 9195007, "canp": 44083896};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
 document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
@@ -521,7 +521,7 @@ document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 6589765, "cmip": 1551292, "count": 4.0}, {"name": "구은성", "team": "peacock", "canp": 274152, "cmip": 38280, "count": 1.0}, {"name": "이혜지", "team": "peacock", "canp": 304344, "cmip": 43500, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 1545888, "cmip": 175184, "count": 3.0}, {"name": "김예담", "team": "peacock", "canp": 174843, "cmip": 25948, "count": 1.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 5172403, "cmip": 1351292, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 8160323, "cmip": 1500321, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 11714246, "cmip": 2052684, "count": 7.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 11629765, "cmip": 3051292, "count": 5.0}, {"name": "구은성", "team": "peacock", "canp": 274152, "cmip": 38280, "count": 1.0}, {"name": "이혜지", "team": "peacock", "canp": 304344, "cmip": 43500, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 1545888, "cmip": 175184, "count": 3.0}, {"name": "김예담", "team": "peacock", "canp": 174843, "cmip": 25948, "count": 1.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 5172403, "cmip": 1351292, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 8160323, "cmip": 1500321, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 990628, "cmip": 150262, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1849036, "cmip": 355108, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 11714246, "cmip": 2052684, "count": 7.0}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
@@ -682,7 +682,7 @@ renderCIS(CIS_ENTRIES);
 // ---------- 시책 현황 (미니썸머) ----------
 // 서버(dashboard.py)가 taevis policy 로직으로 계산한 값 그대로 치환:
 // [{name, june, july, total, achieved, gap}, ...]
-const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 1551292, "total": 2994377, "achieved": true, "gap": 0, "progress": 2994377, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1500321, "total": 2101325, "achieved": true, "gap": 0, "progress": 2101325, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 175184, "total": 275498, "achieved": false, "gap": 1324816, "progress": 175184, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 355108, "total": 1117224, "achieved": false, "gap": 382776, "progress": 1117224, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 1351292, "total": 1932930, "achieved": true, "gap": 0, "progress": 1932930, "target": 1500000}, {"name": "임이지", "june": 396234, "july": 0, "total": 396234, "achieved": false, "gap": 1403766, "progress": 396234, "target": 1800000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 150262, "total": 472061, "achieved": false, "gap": 1327939, "progress": 472061, "target": 1800000}];
+const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, "total": 4494377, "achieved": true, "gap": 0, "progress": 4494377, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1500321, "total": 2101325, "achieved": true, "gap": 0, "progress": 2101325, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 175184, "total": 275498, "achieved": false, "gap": 1324816, "progress": 175184, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 355108, "total": 1117224, "achieved": false, "gap": 382776, "progress": 1117224, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 1351292, "total": 1932930, "achieved": true, "gap": 0, "progress": 1932930, "target": 1500000}, {"name": "임이지", "june": 396234, "july": 0, "total": 396234, "achieved": false, "gap": 1403766, "progress": 396234, "target": 1800000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 150262, "total": 472061, "achieved": false, "gap": 1327939, "progress": 472061, "target": 1800000}];
 (function renderPolicy(){
   const wrap = document.getElementById('policy-list');
   if(!POLICY_ENTRIES || POLICY_ENTRIES.length===0){
