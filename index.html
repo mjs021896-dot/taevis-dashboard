@@ -186,7 +186,8 @@
   .policy-name.fail{color:var(--faint);}
   .policy-bar-track{height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;}
   .policy-bar-fill{height:100%; border-radius:3px; box-shadow:0 0 8px currentColor;}
-  .policy-amt{font-family:var(--mono); font-size:11.5px; color:var(--muted); text-align:right; white-space:nowrap;}
+  .policy-amt{font-family:var(--mono); font-size:11.5px; color:var(--muted); text-align:right; white-space:normal; line-height:1.5; word-break:keep-all;}
+  .policy-amt-path{display:block; font-size:0.9em;}
   .policy-amt b{color:var(--text); font-weight:600;}
   .policy-badge{font-family:var(--mono); font-size:11px; text-align:center;}
   .policy-badge.done{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
@@ -716,7 +717,7 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, 
         <div class="policy-row">
           <span class="policy-name">${p.name}</span>
           <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
-          <span class="policy-amt"><b>${prog.toLocaleString()}</b> / ${tgt.toLocaleString()}원 <span style="color:var(--faint);">(${pathLabel})</span></span>
+          <span class="policy-amt"><b>${prog.toLocaleString()}</b> / ${tgt.toLocaleString()}원<span class="policy-amt-path" style="color:var(--faint);">(${pathLabel})</span></span>
           <span class="policy-badge" style="color:var(--muted);">${p.gap>0 ? '-'+p.gap.toLocaleString() : pct+'%'}</span>
         </div>`;
     }).join('');
