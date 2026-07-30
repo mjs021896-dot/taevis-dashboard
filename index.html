@@ -515,10 +515,12 @@
     <span class="idx">06</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
-    <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:14px;">
-      MDRT/COT/TOT · SL승급 · M제도 · Premier FC · Partners Club · Rookies · New Star · 영업대상 · 관리자임명 — 기준의 80% 이상, 아직 미달성인 대상만 표시
+    <!-- 임박자 자동 산출(agents/guideline/imminent.py)은 계산이 정확하지 않아 잠시 내려둔 상태.
+         기준 검증이 끝나면 아래 준비중 블록을 지우고 <div id="imminent-list"></div>와
+         페이지 하단의 renderImminent 블록을 되살리면 된다. -->
+    <div style="text-align:center; padding:56px 16px; font-size:24px; font-weight:600; color:var(--muted); letter-spacing:0.05em;">
+      준비중
     </div>
-    <div id="imminent-list"></div>
   </div>
 
   <footer>TAEVIS DASHBOARD · 문태양 전용 · 데이터는 요청 시점 스냅샷입니다</footer>
@@ -709,7 +711,7 @@ renderCIS(CIS_ENTRIES);
 // ---------- 시책 현황 (미니썸머) ----------
 // 서버(dashboard.py)가 taevis policy 로직으로 계산한 값 그대로 치환:
 // [{name, june, july, total, achieved, gap}, ...]
-const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, "total": 4494377, "achieved": true, "gap": 0, "progress": 4494377, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1500321, "total": 2101325, "achieved": true, "gap": 0, "progress": 2101325, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 175184, "total": 275498, "achieved": false, "gap": 1324816, "progress": 175184, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 460352, "total": 1222468, "achieved": false, "gap": 277532, "progress": 1222468, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 1351292, "total": 1932930, "achieved": true, "gap": 0, "progress": 1932930, "target": 1500000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 950262, "total": 1272061, "achieved": false, "gap": 527939, "progress": 1272061, "target": 1800000}];
+const POLICY_ENTRIES = [];
 (function renderPolicy(){
   const wrap = document.getElementById('policy-list');
   if(!POLICY_ENTRIES || POLICY_ENTRIES.length===0){
@@ -751,29 +753,31 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, 
   wrap.innerHTML = html;
 })();
 
-// ---------- 시상 · 승진 진도 (임박자, 80% 이상 미달성) ----------
-// 서버(dashboard.py -> agents/guideline/imminent.py)가 전 인원 9개 제도를 스캔해서
-// [{name, category, ratio, detail}, ...] 형태로 치환. ratio는 0~1 사이 진행률.
-const IMMINENT_ENTRIES = [{"name": "박재언", "category": "영업대상 4회차(짝수달위촉_업적우수)", "ratio": 0.8333333333333334, "detail": "2건 · CMIP 460,352원 · CANP 2,859,378원"}];
-(function renderImminent(){
-  const wrap = document.getElementById('imminent-list');
-  if(!IMMINENT_ENTRIES || IMMINENT_ENTRIES.length===0){
-    wrap.innerHTML = `<div class="empty-note">80% 이상 임박한 승급·시상 대상이 없습니다.</div>`;
-    return;
-  }
-  wrap.innerHTML = IMMINENT_ENTRIES.map(e=>{
-    const pct = Math.min(100, e.ratio*100).toFixed(0);
-    return `
-      <div class="imm-row">
-        <div class="imm-top">
-          <span><span class="imm-name">${e.name}</span><span class="imm-cat">${e.category}</span></span>
-          <span class="imm-pct">${pct}%</span>
-        </div>
-        <div class="imm-bar-track"><div class="imm-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
-        <div class="imm-detail">${e.detail}</div>
-      </div>`;
-  }).join('');
-})();
+// ---------- 시상 · 승진 진도 ----------
+// 임박자 자동 산출은 계산 검증이 끝날 때까지 중단. 섹션은 '준비중'으로 고정 표시한다.
+// 되살릴 때는 위 섹션의 준비중 블록을 <div id="imminent-list"></div>로 바꾸고
+// 아래 주석 처리된 렌더 코드를 복구할 것. (데이터는 dashboard.py의 _read_imminent_data)
+//
+// const IMMINENT_ENTRIES = [];
+// (function renderImminent(){
+//   const wrap = document.getElementById('imminent-list');
+//   if(!IMMINENT_ENTRIES || IMMINENT_ENTRIES.length===0){
+//     wrap.innerHTML = `<div class="empty-note">80% 이상 임박한 승급·시상 대상이 없습니다.</div>`;
+//     return;
+//   }
+//   wrap.innerHTML = IMMINENT_ENTRIES.map(e=>{
+//     const pct = Math.min(100, e.ratio*100).toFixed(0);
+//     return `
+//       <div class="imm-row">
+//         <div class="imm-top">
+//           <span><span class="imm-name">${e.name}</span><span class="imm-cat">${e.category}</span></span>
+//           <span class="imm-pct">${pct}%</span>
+//         </div>
+//         <div class="imm-bar-track"><div class="imm-bar-fill" style="width:${pct}%;"></div></div>
+//         <div class="imm-detail">${e.detail}</div>
+//       </div>`;
+//   }).join('');
+// })();
 </script>
 </body>
 </html>
