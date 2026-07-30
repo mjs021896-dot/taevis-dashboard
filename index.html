@@ -230,6 +230,17 @@
     .policy-bar-track{grid-area:bar;}
   }
 
+  /* ---------- 시상 · 승진 진도 (임박자, 80% 이상 미달성) ---------- */
+  .imm-row{padding:10px 4px; border-bottom:1px dashed var(--line-dim);}
+  .imm-row:last-child{border-bottom:none;}
+  .imm-top{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px; flex-wrap:wrap;}
+  .imm-name{font-weight:600; font-size:13px;}
+  .imm-cat{font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:8px;}
+  .imm-pct{font-family:var(--mono); font-size:13px; font-weight:700; color:var(--cyan); white-space:nowrap;}
+  .imm-bar-track{height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; margin-bottom:4px;}
+  .imm-bar-fill{height:100%; border-radius:3px; box-shadow:0 0 8px currentColor;}
+  .imm-detail{font-family:var(--mono); font-size:10.5px; color:var(--faint);}
+
   /* ---------- CIS donut ---------- */
   .cis-layout{display:flex; gap:32px; align-items:center; flex-wrap:wrap;}
   .cis-chart-wrap{position:relative; width:200px; height:200px; flex-shrink:0;}
@@ -504,7 +515,10 @@
     <span class="idx">06</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
-    <div style="text-align:center; padding:40px 0; font-size:22px; font-weight:700; color:var(--muted); letter-spacing:0.1em;">준비중</div>
+    <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:14px;">
+      MDRT/COT/TOT · SL승급 · M제도 · Premier FC · Partners Club · Rookies · New Star · 영업대상 · 관리자임명 — 기준의 80% 이상, 아직 미달성인 대상만 표시
+    </div>
+    <div id="imminent-list"></div>
   </div>
 
   <footer>TAEVIS DASHBOARD · 문태양 전용 · 데이터는 요청 시점 스냅샷입니다</footer>
@@ -735,6 +749,30 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, 
   }
 
   wrap.innerHTML = html;
+})();
+
+// ---------- 시상 · 승진 진도 (임박자, 80% 이상 미달성) ----------
+// 서버(dashboard.py -> agents/guideline/imminent.py)가 전 인원 9개 제도를 스캔해서
+// [{name, category, ratio, detail}, ...] 형태로 치환. ratio는 0~1 사이 진행률.
+const IMMINENT_ENTRIES = __IMMINENT_DATA_JSON__;
+(function renderImminent(){
+  const wrap = document.getElementById('imminent-list');
+  if(!IMMINENT_ENTRIES || IMMINENT_ENTRIES.length===0){
+    wrap.innerHTML = `<div class="empty-note">80% 이상 임박한 승급·시상 대상이 없습니다.</div>`;
+    return;
+  }
+  wrap.innerHTML = IMMINENT_ENTRIES.map(e=>{
+    const pct = Math.min(100, e.ratio*100).toFixed(0);
+    return `
+      <div class="imm-row">
+        <div class="imm-top">
+          <span><span class="imm-name">${e.name}</span><span class="imm-cat">${e.category}</span></span>
+          <span class="imm-pct">${pct}%</span>
+        </div>
+        <div class="imm-bar-track"><div class="imm-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
+        <div class="imm-detail">${e.detail}</div>
+      </div>`;
+  }).join('');
 })();
 </script>
 </body>
