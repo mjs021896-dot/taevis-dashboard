@@ -754,7 +754,7 @@ const POLICY_ENTRIES = [{"name": "곽태허", "june": 1443085, "july": 3051292, 
 // ---------- 시상 · 승진 진도 (임박자, 80% 이상 미달성) ----------
 // 서버(dashboard.py -> agents/guideline/imminent.py)가 전 인원 9개 제도를 스캔해서
 // [{name, category, ratio, detail}, ...] 형태로 치환. ratio는 0~1 사이 진행률.
-const IMMINENT_ENTRIES = [{"name": "진준영", "category": "영업대상 4회차(짝수달위촉_건수우수)", "ratio": 0.9008613333333333, "detail": "2건 · CMIP 1,351,292원 · CANP 5,172,403원"}, {"name": "박재언", "category": "영업대상 4회차(짝수달위촉_업적우수)", "ratio": 0.8333333333333334, "detail": "2건 · CMIP 460,352원 · CANP 2,859,378원"}];
+const IMMINENT_ENTRIES = [{"name": "박재언", "category": "영업대상 4회차(짝수달위촉_업적우수)", "ratio": 0.8333333333333334, "detail": "2건 · CMIP 460,352원 · CANP 2,859,378원"}];
 (function renderImminent(){
   const wrap = document.getElementById('imminent-list');
   if(!IMMINENT_ENTRIES || IMMINENT_ENTRIES.length===0){
