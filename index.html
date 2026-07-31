@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 배경화면(Lively)으로 띄워두면 페이지가 계속 열려 있어 숫자가 멈춘다.
+     10분마다 다시 불러와서 태비스가 새로 발행한 내용을 자동으로 반영한다. -->
+<meta http-equiv="refresh" content="600">
 <title>금강지점 최강4팀 — DashBoard</title>
 <style>
   :root{
@@ -342,6 +345,21 @@
     .bg-deco{display:none;}
     footer{font-size:9px;}
   }
+
+  /* ----------------------------------
+     배경화면용 레이아웃
+     내용은 가운데로 모으고, 남는 좌우는 완전한 검은색으로 둔다.
+     (모니터가 대시보드보다 넓을 때 양옆이 비어 보이는 것을 정리)
+     화면이 1220px보다 좁으면 아무 영향이 없다.
+     위쪽 max-width:100% 규칙보다 뒤에 있어야 적용된다.
+  ---------------------------------- */
+  html{ background:#000; }
+  body{ max-width:1220px; margin-left:auto; margin-right:auto; }
+  /* 화면 전체를 덮던 장식 레이어도 같은 폭으로 가둔다 */
+  .bg-deco, body::before{
+    left:50%; right:auto; transform:translateX(-50%);
+    width:min(1220px, 100%);
+  }
 </style>
 </head>
 <body>
@@ -545,7 +563,7 @@
 }
 
 const TEAM_BP = { cmip: 12000000, canp: 100000000 };
-const TEAM_ACTUAL = {"cmip": 11002512, "canp": 50740793};
+const TEAM_ACTUAL = {"cmip": 11033352, "canp": 50970977};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
 document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
@@ -558,7 +576,7 @@ document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 11629765, "cmip": 3051292, "count": 5.0}, {"name": "구은성", "team": "peacock", "canp": 274152, "cmip": 38280, "count": 1.0}, {"name": "이혜지", "team": "peacock", "canp": 304344, "cmip": 43500, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 1545888, "cmip": 175184, "count": 3.0}, {"name": "김예담", "team": "peacock", "canp": 474198, "cmip": 67349, "count": 2.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 5172403, "cmip": 1351292, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 8160323, "cmip": 1500321, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 5279428, "cmip": 1480262, "count": 4.0}, {"name": "임규찬", "team": "tangerine", "canp": 230400, "cmip": 30860, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 3687378, "cmip": 760352, "count": 3.5}, {"name": "문태양", "team": "graphite", "canp": 11714246, "cmip": 2052684, "count": 7.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 11629765, "cmip": 3051292, "count": 5.0}, {"name": "구은성", "team": "peacock", "canp": 274152, "cmip": 38280, "count": 1.0}, {"name": "이혜지", "team": "peacock", "canp": 304344, "cmip": 43500, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 1545888, "cmip": 175184, "count": 3.0}, {"name": "장민지", "team": "peacock", "canp": 230184, "cmip": 30840, "count": 1.0}, {"name": "김예담", "team": "peacock", "canp": 474198, "cmip": 67349, "count": 2.0}, {"name": "박진균", "team": "peacock", "canp": 2268268, "cmip": 451136, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 5172403, "cmip": 1351292, "count": 2.5}, {"name": "박기현", "team": "banana", "canp": 8160323, "cmip": 1500321, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 5279428, "cmip": 1480262, "count": 4.0}, {"name": "임규찬", "team": "tangerine", "canp": 230400, "cmip": 30860, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 3687378, "cmip": 760352, "count": 3.5}, {"name": "문태양", "team": "graphite", "canp": 11714246, "cmip": 2052684, "count": 7.0}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
