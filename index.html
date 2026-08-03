@@ -647,7 +647,7 @@ Object.entries(TEAMS).forEach(([teamKey, members])=>{
 
 // 여기는 개인 미팅이 아니라 지점/팀 행사·교육 공지용입니다. 알려주시면 이 배열에 추가할게요.
 // 일정은 data/dashboard_schedules.json에서 서버가 매 발행마다 치환합니다.
-const SCHEDULES = [{"date": "07/20", "title": "13차월 미만 FC 교육"}, {"date": "07/27", "title": "13차월 이상 FC 버즈"}];
+const SCHEDULES = [];
 const schedWrap = document.getElementById('sched-list');
 if(SCHEDULES.length===0){
   schedWrap.innerHTML = `<div class="empty-note">등록된 지점·팀 일정이 없습니다.</div>`;
