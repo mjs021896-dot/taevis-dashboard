@@ -181,6 +181,9 @@
 
   /* ---------- Policy (시책) ---------- */
   #policy-list{display:flex; flex-direction:column; gap:16px;}
+  .intro-person-row{padding:10px 4px; border-bottom:1px dashed var(--line-dim);}
+  .intro-person-row:last-child{border-bottom:none;}
+  .intro-person-name{font-weight:600; font-size:13px; margin-bottom:4px;}
   .policy-row{
     display:grid; grid-template-columns:minmax(0,72px) 1fr minmax(0,auto); gap:12px; align-items:center;
     padding:10px 4px; border-bottom:1px dashed var(--line-dim); font-size:13px;
@@ -810,31 +813,31 @@ function renderGenericPolicyBody(p){
 function renderIntroPolicyBody(p){
   const pct = Math.min(100, (p.total_paid/p.budget*100)).toFixed(0);
   const winners = p.winners || [];
-  const totalManwon = Math.round(p.total_paid / 10000);
 
-  let html = `
-    <div class="policy-amt" style="text-align:left; font-size:13px; margin-bottom:4px;">CIS 건수 - <b>${p.total_count}건</b></div>
-    <div class="policy-amt" style="text-align:left; font-size:13px; margin-bottom:10px;">누적 시책금 - <b>${totalManwon}만원</b></div>
-    <div class="policy-bar-track" style="margin-bottom:6px;"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
-    <div style="font-family:var(--mono); font-size:10.5px; color:var(--faint); margin-bottom:14px;">
-      예산 ${Math.round(p.budget/10000)}만원 중 ${totalManwon}만원 소진 (${p.total_count}/${p.max_count}건 · ${pct}%)
-    </div>`;
+  let html = '';
 
   if(p.ended){
     html += `<div class="policy-ended">${p.name} 종료</div>`;
   }
 
+  // CIS 건수/누적 시책금은 팀 합계가 아니라 FC 개별 카운팅 - 건수가 생긴 사람만 한 줄씩 표시
   if(winners.length){
-    html += `
-      <div class="policy-winners">
-        <div class="policy-winners-title">🏆 인원별 지급 현황</div>
-        <div class="policy-winners-names">
-          ${winners.map(w=>`<span class="policy-winner">${w.name} · ${w.count}건 (${Math.round(w.amount/10000)}만원)</span>`).join('')}
-        </div>
-      </div>`;
+    html += winners.map(w=>`
+      <div class="intro-person-row">
+        <div class="intro-person-name">${w.name}</div>
+        <div class="policy-amt" style="text-align:left;">CIS 건수 - <b>${w.count}건</b></div>
+        <div class="policy-amt" style="text-align:left;">누적 시책금 - <b>${Math.round(w.amount/10000)}만원</b></div>
+      </div>`).join('');
   } else {
-    html += `<div class="empty-note">아직 완료로 등록된 인원이 없습니다.</div>`;
+    html += `<div class="empty-note">아직 CIS 건수가 있는 FC가 없습니다.</div>`;
   }
+
+  html += `
+    <div class="policy-bar-track" style="margin-top:14px; margin-bottom:6px;"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
+    <div style="font-family:var(--mono); font-size:10.5px; color:var(--faint);">
+      팀 전체 예산 ${Math.round(p.budget/10000)}만원 중 ${Math.round(p.total_paid/10000)}만원 소진 (${p.total_count}/${p.max_count}건 · ${pct}%)
+    </div>`;
+
   return html;
 }
 
