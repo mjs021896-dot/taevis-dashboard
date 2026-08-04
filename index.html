@@ -180,6 +180,7 @@
   .placeholder{border:1px dashed var(--line); border-radius:4px; padding:14px; font-size:12px; color:var(--muted); line-height:1.7; background:rgba(0,0,0,0.2);}
 
   /* ---------- Policy (시책) ---------- */
+  #policy-list{display:flex; flex-direction:column; gap:16px;}
   .policy-row{
     display:grid; grid-template-columns:minmax(0,72px) 1fr minmax(0,auto); gap:12px; align-items:center;
     padding:10px 4px; border-bottom:1px dashed var(--line-dim); font-size:13px;
@@ -527,14 +528,9 @@
 
   <div class="section-head">
     <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
-    <span class="idx">05</span><h2>시책 현황 — 미니썸머</h2><div class="rule"></div>
+    <span class="idx">05</span><h2>시책 현황</h2><div class="rule"></div>
   </div>
-  <div class="card hud-frame">
-    <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-bottom:14px;">
-      기간 2026-06-01 ~ 2026-07-31 · 정규: 6월 50만↑ + 합산 150만↑ / 추가: 합산 180만↑ 또는 7월 단독 150만↑ → 제주
-    </div>
-    <div id="policy-list"></div>
-  </div>
+  <div id="policy-list"></div>
 
   <div class="section-head">
     <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
@@ -734,30 +730,25 @@ function renderCIS(entries){
 const CIS_ENTRIES = [{"date": "08/06", "time": "11:00", "candidate": "전중혁", "fc": "문태양"}];
 renderCIS(CIS_ENTRIES);
 
-// ---------- 시책 현황 (미니썸머) ----------
+// ---------- 시책 현황 (지금 존재하는 시책 시트 전부) ----------
 // 서버(dashboard.py)가 taevis policy 로직으로 계산한 값 그대로 치환:
-// { entries:[{name, june, july, total, achieved, gap, progress, target}, ...],
-//   ended: 실적 기간 종료 여부, period: 기간 문구 }
-const POLICY_RAW     = {"entries": [{"name": "곽태허", "june": 1443085, "july": 3051292, "total": 4494377, "achieved": true, "gap": 0, "progress": 4494377, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1500321, "total": 2101325, "achieved": true, "gap": 0, "progress": 2101325, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 175184, "total": 275498, "achieved": false, "gap": 1324816, "progress": 175184, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 760352, "total": 1522468, "achieved": true, "gap": 0, "progress": 1522468, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 1351292, "total": 1932930, "achieved": true, "gap": 0, "progress": 1932930, "target": 1500000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 1480262, "total": 1802061, "achieved": true, "gap": 0, "progress": 1802061, "target": 1500000}], "ended": true, "period": "시책 기간: 2026-06-01 ~ 2026-07-31"};
-// 배열에는 entries()라는 내장 메서드가 있어서, 배열 여부를 먼저 확인해야 한다.
-const POLICY_ENTRIES = Array.isArray(POLICY_RAW) ? POLICY_RAW
-                     : (POLICY_RAW && Array.isArray(POLICY_RAW.entries) ? POLICY_RAW.entries : []);
-const POLICY_ENDED   = !!(POLICY_RAW && POLICY_RAW.ended);
-(function renderPolicy(){
-  const wrap = document.getElementById('policy-list');
-  if(!POLICY_ENTRIES || POLICY_ENTRIES.length===0){
-    wrap.innerHTML = `<div class="empty-note">시책 데이터가 없습니다.</div>`;
-    return;
-  }
+// { policies: [
+//     { name, type:"mini", period, ended, entries:[{name,june,july,total,achieved,gap,progress,target}, ...] },
+//     { name, type:"generic", period, ended, achievers:[{name, detail}, ...] },
+//     ...
+// ] }
+const POLICY_RAW = {"entries": [{"name": "곽태허", "june": 1443085, "july": 3051292, "total": 4494377, "achieved": true, "gap": 0, "progress": 4494377, "target": 1500000}, {"name": "박기현", "june": 601004, "july": 1500321, "total": 2101325, "achieved": true, "gap": 0, "progress": 2101325, "target": 1500000}, {"name": "한승희", "june": 100314, "july": 175184, "total": 275498, "achieved": false, "gap": 1324816, "progress": 175184, "target": 1500000}, {"name": "박재언", "june": 762116, "july": 760352, "total": 1522468, "achieved": true, "gap": 0, "progress": 1522468, "target": 1500000}, {"name": "진준영", "june": 581638, "july": 1351292, "total": 1932930, "achieved": true, "gap": 0, "progress": 1932930, "target": 1500000}, {"name": "박진균", "june": 2234410, "july": 451136, "total": 2685546, "achieved": true, "gap": 0, "progress": 2685546, "target": 1500000}, {"name": "김주상", "june": 321799, "july": 1480262, "total": 1802061, "achieved": true, "gap": 0, "progress": 1802061, "target": 1500000}], "ended": true, "period": "시책 기간: 2026-06-01 ~ 2026-07-31"};
+const POLICIES   = (POLICY_RAW && Array.isArray(POLICY_RAW.policies)) ? POLICY_RAW.policies : [];
+
+function renderMiniPolicyBody(p){
   const TARGET = 1500000; // 진행률 바 기준(정규 목표)
-  const winners = POLICY_ENTRIES.filter(p=>p.achieved).sort((a,b)=>b.total-a.total);
-  const inProgress = POLICY_ENTRIES.filter(p=>!p.achieved).sort((a,b)=>b.total-a.total);
+  const entries = p.entries || [];
+  const winners = entries.filter(e=>e.achieved).sort((a,b)=>b.total-a.total);
+  const inProgress = entries.filter(e=>!e.achieved).sort((a,b)=>b.total-a.total);
 
   let html = '';
-
-  // 실적 기간이 끝나면 '종료'만 알리고 달성자만 남긴다 (진행 중 명단은 의미가 없어짐)
-  if(POLICY_ENDED){
-    html += `<div class="policy-ended">미니썸머 종료</div>`;
+  if(p.ended){
+    html += `<div class="policy-ended">${p.name} 종료</div>`;
   }
 
   if(winners.length){
@@ -765,30 +756,102 @@ const POLICY_ENDED   = !!(POLICY_RAW && POLICY_RAW.ended);
       <div class="policy-winners">
         <div class="policy-winners-title">🏆 달성자</div>
         <div class="policy-winners-names">
-          ${winners.map(p=>`<span class="policy-winner">✈️ ${p.name}</span>`).join('')}
+          ${winners.map(e=>`<span class="policy-winner">✈️ ${e.name}</span>`).join('')}
         </div>
       </div>`;
-  } else if(POLICY_ENDED){
+  } else if(p.ended){
     html += `<div class="empty-note">달성자가 없습니다.</div>`;
   }
 
-  if(!POLICY_ENDED && inProgress.length){
+  if(!p.ended && inProgress.length){
     html += `<div class="policy-sub-title">진행 중 (본인에게 가장 유리한 달성 경로 기준)</div>`;
-    html += inProgress.map(p=>{
-      const prog = p.progress !== undefined ? p.progress : p.total;
-      const tgt = p.target !== undefined ? p.target : TARGET;
+    html += inProgress.map(e=>{
+      const prog = e.progress !== undefined ? e.progress : e.total;
+      const tgt = e.target !== undefined ? e.target : TARGET;
       const pct = Math.min(100, (prog/tgt*100)).toFixed(0);
-      const left = Math.max(0, (p.gap !== undefined ? p.gap : tgt - prog));
+      const left = Math.max(0, (e.gap !== undefined ? e.gap : tgt - prog));
       return `
         <div class="policy-row">
-          <span class="policy-name">${p.name}</span>
+          <span class="policy-name">${e.name}</span>
           <div class="policy-bar-track"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
           <span class="policy-amt"><span class="lbl">(현재)</span><b>${prog.toLocaleString()}</b>원 / <span class="lbl">(남은업적)</span><span class="left">${left.toLocaleString()}</span>원</span>
         </div>`;
     }).join('');
   }
+  return html;
+}
 
-  wrap.innerHTML = html;
+function renderGenericPolicyBody(p){
+  const achievers = p.achievers || [];
+  let html = '';
+  if(p.ended){
+    html += `<div class="policy-ended">${p.name} 종료</div>`;
+  }
+  if(achievers.length){
+    html += `
+      <div class="policy-winners">
+        <div class="policy-winners-title">🏆 달성자</div>
+        <div class="policy-winners-names">
+          ${achievers.map(a=>`<span class="policy-winner">${a.name}${a.detail ? ` · ${a.detail}` : ''}</span>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    html += `<div class="empty-note">${p.ended ? '달성자가 없습니다.' : '아직 달성자가 없습니다 (진행 중).'}</div>`;
+  }
+  return html;
+}
+
+function renderIntroPolicyBody(p){
+  const pct = Math.min(100, (p.total_paid/p.budget*100)).toFixed(0);
+  const winners = p.winners || [];
+  const totalManwon = Math.round(p.total_paid / 10000);
+
+  let html = `
+    <div class="policy-amt" style="text-align:left; font-size:13px; margin-bottom:4px;">CIS 건수 - <b>${p.total_count}건</b></div>
+    <div class="policy-amt" style="text-align:left; font-size:13px; margin-bottom:10px;">누적 시책금 - <b>${totalManwon}만원</b></div>
+    <div class="policy-bar-track" style="margin-bottom:6px;"><div class="policy-bar-fill" style="width:${pct}%; background:var(--cyan); color:var(--cyan);"></div></div>
+    <div style="font-family:var(--mono); font-size:10.5px; color:var(--faint); margin-bottom:14px;">
+      예산 ${Math.round(p.budget/10000)}만원 중 ${totalManwon}만원 소진 (${p.total_count}/${p.max_count}건 · ${pct}%)
+    </div>`;
+
+  if(p.ended){
+    html += `<div class="policy-ended">${p.name} 종료</div>`;
+  }
+
+  if(winners.length){
+    html += `
+      <div class="policy-winners">
+        <div class="policy-winners-title">🏆 인원별 지급 현황</div>
+        <div class="policy-winners-names">
+          ${winners.map(w=>`<span class="policy-winner">${w.name} · ${w.count}건 (${Math.round(w.amount/10000)}만원)</span>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    html += `<div class="empty-note">아직 완료로 등록된 인원이 없습니다.</div>`;
+  }
+  return html;
+}
+
+(function renderAllPolicies(){
+  const wrap = document.getElementById('policy-list');
+  if(!POLICIES.length){
+    wrap.innerHTML = `<div class="card hud-frame"><div class="empty-note">등록된 시책이 없습니다.</div></div>`;
+    return;
+  }
+
+  wrap.innerHTML = POLICIES.map(p=>{
+    const body = p.type === 'mini' ? renderMiniPolicyBody(p)
+               : p.type === 'intro' ? renderIntroPolicyBody(p)
+               : renderGenericPolicyBody(p);
+    return `
+      <div class="card hud-frame">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+          <div style="font-size:14px; font-weight:700;">${p.name}</div>
+          ${p.period ? `<div style="font-family:var(--mono); font-size:10.5px; color:var(--muted);">${p.period}</div>` : ''}
+        </div>
+        ${body}
+      </div>`;
+  }).join('');
 })();
 
 // ---------- 시상 · 승진 진도 ----------
