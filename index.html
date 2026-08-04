@@ -778,6 +778,12 @@ function renderMiniPolicyBody(p){
         </div>`;
     }).join('');
   }
+
+  // 달성자도 없고(winners) 진행 중 실적도(inProgress) 아직 없는 완전 초기 상태 -
+  // 시책 자체는 이미 등록됐으니 빈 카드로 두지 말고 안내 문구는 보여준다
+  if(!html){
+    html = `<div class="empty-note">아직 등록된 실적이 없습니다.</div>`;
+  }
   return html;
 }
 
