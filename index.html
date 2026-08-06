@@ -562,7 +562,7 @@
 }
 
 const TEAM_BP = {"cmip": 30000000, "canp": 200000000};
-const TEAM_ACTUAL = {"cmip": 0, "canp": 0};
+const TEAM_ACTUAL = {"cmip": 500000, "canp": 1680000};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
 document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
@@ -570,12 +570,12 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 7};
+const TODAY_STATS = {"meetings": 0, "cis": 3};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [].map(d=>({
+const CANP = [{"name": "한승희", "team": "peacock", "canp": 1680000, "cmip": 500000, "count": 1.0}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
