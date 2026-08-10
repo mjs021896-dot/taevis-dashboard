@@ -570,7 +570,7 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 5};
+const TODAY_STATS = {"meetings": 1, "cis": 4};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
@@ -740,7 +740,7 @@ renderCIS(CIS_ENTRIES);
 //     { name, type:"generic", period, ended, achievers:[{name, detail}, ...] },
 //     ...
 // ] }
-const POLICY_RAW = {"policies": [{"name": "최강 4팀 도입시책", "type": "intro", "period": "~ 2026-08-27 (또는 1,500,000원 소진 시 조기 종료)", "ended": false, "total_paid": 0, "budget": 1500000, "total_count": 0, "max_count": 50, "winners": []}, {"name": "미니썸머", "type": "mini", "period": "시책 기간: 2026-06-01 ~ 2026-07-31", "ended": true, "entries": []}]};
+const POLICY_RAW = {"policies": [{"name": "최강 4팀 도입시책", "type": "intro", "period": "~ 2026-08-27 (또는 1,500,000원 소진 시 조기 종료)", "ended": false, "total_paid": 0, "budget": 1500000, "total_count": 0, "max_count": 50, "winners": []}]};
 const POLICIES   = (POLICY_RAW && Array.isArray(POLICY_RAW.policies)) ? POLICY_RAW.policies : [];
 
 function renderMiniPolicyBody(p){
