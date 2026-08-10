@@ -740,7 +740,7 @@ renderCIS(CIS_ENTRIES);
 //     { name, type:"generic", period, ended, achievers:[{name, detail}, ...] },
 //     ...
 // ] }
-const POLICY_RAW = {"policies": [{"name": "최강 4팀 도입시책", "type": "intro", "period": "~ 2026-08-27 (또는 1,500,000원 소진 시 조기 종료)", "ended": false, "total_paid": 0, "budget": 1500000, "total_count": 0, "max_count": 50, "winners": []}]};
+const POLICY_RAW = {"policies": [{"name": "최강 4팀 도입시책", "type": "intro", "period": "~ 2026-08-27 (또는 1,500,000원 소진 시 조기 종료)", "ended": false, "total_paid": 0, "budget": 1500000, "total_count": 0, "max_count": 50, "winners": []}, {"name": "미니썸머", "type": "mini", "period": "시책 기간: 2026-06-01 ~ 2026-07-31", "ended": true, "entries": []}]};
 const POLICIES   = (POLICY_RAW && Array.isArray(POLICY_RAW.policies)) ? POLICY_RAW.policies : [];
 
 function renderMiniPolicyBody(p){
