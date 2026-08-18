@@ -562,7 +562,7 @@
 }
 
 const TEAM_BP = {"cmip": 30000000, "canp": 200000000};
-const TEAM_ACTUAL = {"cmip": 1516545, "canp": 6109384};
+const TEAM_ACTUAL = {"cmip": 2561146, "canp": 14616378};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
 document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
@@ -570,12 +570,12 @@ document.getElementById('canp-bp').textContent = `${TEAM_BP.canp.toLocaleString(
 document.getElementById('canp-actual').textContent = `${TEAM_ACTUAL.canp.toLocaleString()}원`;
 document.getElementById('canp-rate').textContent = `${(TEAM_ACTUAL.canp/TEAM_BP.canp*100).toFixed(1)}%`;
 
-const TODAY_STATS = {"meetings": 0, "cis": 0};
+const TODAY_STATS = {"meetings": 0, "cis": 2};
 document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}건`;
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 1242000, "cmip": 450000, "count": 1.5}, {"name": "한승희", "team": "peacock", "canp": 4453384, "cmip": 916545, "count": 4.0}, {"name": "박재언", "team": "tangerine", "canp": 414000, "cmip": 150000, "count": 0.5}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 1242000, "cmip": 450000, "count": 1.5}, {"name": "한승희", "team": "peacock", "canp": 5281384, "cmip": 1216545, "count": 5.0}, {"name": "진준영", "team": "peacock", "canp": 4242851, "cmip": 404142, "count": 2.0}, {"name": "전찬호", "team": "banana", "canp": 2191071, "cmip": 203199, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 1417392, "cmip": 254520, "count": 1.5}, {"name": "문태양", "team": "graphite", "canp": 241680, "cmip": 32740, "count": 1.0}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
