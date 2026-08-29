@@ -562,7 +562,7 @@
 }
 
 const TEAM_BP = {"cmip": 30000000, "canp": 200000000};
-const TEAM_ACTUAL = {"cmip": 5250374, "canp": 34114612};
+const TEAM_ACTUAL = {"cmip": 6453639, "canp": 38744426};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
 document.getElementById('cmip-rate').textContent = `${(TEAM_ACTUAL.cmip/TEAM_BP.cmip*100).toFixed(1)}%`;
@@ -575,7 +575,7 @@ document.getElementById('today-meetings').textContent = `${TODAY_STATS.meetings}
 document.getElementById('today-cis').textContent = `${TODAY_STATS.cis}건`;
 
 // 아래 CANP 배열은 서버(dashboard.py)가 구글시트 실시간 값으로 매 요청마다 치환합니다.
-const CANP = [{"name": "곽태허", "team": "peacock", "canp": 1242000, "cmip": 450000, "count": 1.5}, {"name": "이혜지", "team": "peacock", "canp": 336048, "cmip": 48260, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 4655205, "cmip": 1007745, "count": 4.0}, {"name": "김예담", "team": "peacock", "canp": 701586, "cmip": 92222, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 7606523, "cmip": 835382, "count": 4.0}, {"name": "박기현", "team": "banana", "canp": 2184084, "cmip": 202230, "count": 1.0}, {"name": "전찬호", "team": "banana", "canp": 3988277, "cmip": 604158, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 122812, "cmip": 51172, "count": 1.0}, {"name": "윤혜연", "team": "tangerine", "canp": 1530000, "cmip": 170000, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 11506397, "cmip": 1756465, "count": 6.5}, {"name": "문태양", "team": "graphite", "canp": 241680, "cmip": 32740, "count": 1.0}].map(d=>({
+const CANP = [{"name": "곽태허", "team": "peacock", "canp": 1242000, "cmip": 450000, "count": 1.5}, {"name": "이혜지", "team": "peacock", "canp": 336048, "cmip": 48260, "count": 1.0}, {"name": "한승희", "team": "peacock", "canp": 5026725, "cmip": 1059345, "count": 5.0}, {"name": "김예담", "team": "peacock", "canp": 701586, "cmip": 92222, "count": 1.0}, {"name": "진준영", "team": "peacock", "canp": 7606523, "cmip": 835382, "count": 4.0}, {"name": "박기현", "team": "banana", "canp": 3864084, "cmip": 702230, "count": 2.0}, {"name": "전찬호", "team": "banana", "canp": 3988277, "cmip": 604158, "count": 3.0}, {"name": "김주상", "team": "banana", "canp": 1802812, "cmip": 551172, "count": 2.0}, {"name": "윤혜연", "team": "tangerine", "canp": 1530000, "cmip": 170000, "count": 1.0}, {"name": "임규찬", "team": "tangerine", "canp": 898294, "cmip": 151665, "count": 1.0}, {"name": "박재언", "team": "tangerine", "canp": 11506397, "cmip": 1756465, "count": 6.5}, {"name": "문태양", "team": "graphite", "canp": 241680, "cmip": 32740, "count": 1.0}].map(d=>({
   ...d,
   elite: d.cmip>=300000 || d.canp>=1500000 || d.count>=4,   // 정예화: CMIP 30만↑ or CANP 150만↑ or 4건↑
   premier: d.canp>=5000000,                                  // 당월 프리미어: CANP 500만↑
