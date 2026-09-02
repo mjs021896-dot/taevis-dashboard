@@ -561,7 +561,7 @@
     `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 }
 
-const TEAM_BP = {"cmip": 12000000, "canp": 100000000};
+const TEAM_BP = {"cmip": 6000000, "canp": 40000000};
 const TEAM_ACTUAL = {"cmip": 433700, "canp": 4336377};
 document.getElementById('cmip-bp').textContent = `${TEAM_BP.cmip.toLocaleString()}원`;
 document.getElementById('cmip-actual').textContent = `${TEAM_ACTUAL.cmip.toLocaleString()}원`;
