@@ -9,26 +9,26 @@
 <title>금강지점 최강4팀 — DashBoard</title>
 <style>
   :root{
-    --bg: #05080d;
-    --bg-deep: #030507;
-    --panel: rgba(10,22,34,0.55);
-    --panel-solid: #0a1622;
-    --line: rgba(53,212,255,0.28);
-    --line-dim: rgba(53,212,255,0.12);
-    --text: #e7f6ff;
-    --muted: #6f93a8;
-    --faint: #3d5567;
+    --bg: #0b0b0c;
+    --bg-deep: #050505;
+    --panel: rgba(23,22,19,0.65);
+    --panel-solid: #171613;
+    --line: rgba(212,175,55,0.28);
+    --line-dim: rgba(212,175,55,0.12);
+    --text: #f0ead8;
+    --muted: #a89f86;
+    --faint: #6b6252;
 
-    --cyan: #35d4ff;
-    --cyan-soft: rgba(53,212,255,0.14);
-    --peacock: #22c4a6;
-    --peacock-soft: rgba(34,196,166,0.16);
-    --banana: #ffd23f;
-    --banana-soft: rgba(255,210,63,0.14);
-    --tangerine: #ff7a45;
-    --tangerine-soft: rgba(255,122,69,0.14);
-    --graphite: #cbd6de;
-    --graphite-soft: rgba(203,214,222,0.14);
+    --cyan: #d4af37;
+    --cyan-soft: rgba(212,175,55,0.14);
+    --peacock: #f4cf5e;
+    --peacock-soft: rgba(244,207,94,0.16);
+    --banana: #f4cf5e;
+    --banana-soft: rgba(156,122,30,0.14);
+    --tangerine: #d98a3d;
+    --tangerine-soft: rgba(217,138,61,0.14);
+    --graphite: #a89f86;
+    --graphite-soft: rgba(168,159,134,0.14);
 
     --mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
     --sans: -apple-system, 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
@@ -37,11 +37,11 @@
   html,body{background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh;}
   body{
     background-image:
-      radial-gradient(ellipse 900px 600px at 20% -10%, rgba(53,212,255,0.10), transparent 60%),
-      radial-gradient(ellipse 800px 600px at 100% 10%, rgba(34,196,166,0.07), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 20% -10%, rgba(212,175,55,0.10), transparent 60%),
+      radial-gradient(ellipse 800px 600px at 100% 10%, rgba(244,207,94,0.07), transparent 60%),
       linear-gradient(var(--bg-deep), var(--bg-deep)),
-      repeating-linear-gradient(0deg, rgba(53,212,255,0.035) 0px, rgba(53,212,255,0.035) 1px, transparent 1px, transparent 42px),
-      repeating-linear-gradient(90deg, rgba(53,212,255,0.035) 0px, rgba(53,212,255,0.035) 1px, transparent 1px, transparent 42px);
+      repeating-linear-gradient(0deg, rgba(212,175,55,0.035) 0px, rgba(212,175,55,0.035) 1px, transparent 1px, transparent 42px),
+      repeating-linear-gradient(90deg, rgba(212,175,55,0.035) 0px, rgba(212,175,55,0.035) 1px, transparent 1px, transparent 42px);
     padding: 30px 20px 60px;
     position:relative;
   }
@@ -76,7 +76,7 @@
     text-transform:uppercase; margin-bottom:6px;
   }
   h1{font-size:24px; font-weight:800; letter-spacing:0.01em; color:var(--text);}
-  h1 span{color:var(--cyan); text-shadow:0 0 14px rgba(53,212,255,0.55);}
+  h1 span{color:var(--cyan); text-shadow:0 0 14px rgba(212,175,55,0.55);}
   .clock{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:right;}
   .clock b{color:var(--cyan);}
 
@@ -98,11 +98,11 @@
   .stat-block{flex:1; min-width:0;}
   .stat-row.divided .stat-block:not(:first-child){border-left:1px solid var(--line); padding-left:10px;}
   .stat-block .stat-label{font-size:11px; color:var(--muted); letter-spacing:0.05em; margin-bottom:6px;}
-  .stat-block .stat-val{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
+  .stat-block .stat-val{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(212,175,55,0.4);}
   .total-cell{container-type:inline-size;}
   .stat-block .stat-val.money{font-size:clamp(9px, 4.2cqw, 14px); white-space:nowrap;}
   .stat-block .stat-rate{font-family:var(--mono); font-size:10px; color:var(--faint); margin-top:3px;}
-  .total-cell .val{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(53,212,255,0.4);}
+  .total-cell .val{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(212,175,55,0.4);}
   .total-cell .sub{font-size:11px; color:var(--faint); margin-top:4px;}
 
   /* ---------- Section heading ---------- */
@@ -126,9 +126,9 @@
   }
   .board-head span:nth-child(4), .board-head span:nth-child(5){text-align:center;}
   .rank{font-family:var(--mono); font-size:13px; color:var(--faint); font-weight:700;}
-  .rank.gold{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
+  .rank.gold{color:var(--banana); text-shadow:0 0 8px rgba(244,207,94,0.5);}
   .rank.silver{color:#dfe9ef;}
-  .rank.bronze{color:var(--tangerine); text-shadow:0 0 8px rgba(255,122,69,0.4);}
+  .rank.bronze{color:var(--tangerine); text-shadow:0 0 8px rgba(217,138,61,0.4);}
   .who{display:flex; align-items:center; gap:9px;}
   .dot{width:7px; height:7px; border-radius:50%; flex-shrink:0; box-shadow:0 0 6px currentColor;}
   .dot.peacock{background:var(--peacock); color:var(--peacock);}
@@ -201,23 +201,23 @@
   .policy-amt .lbl{color:var(--faint); font-size:0.88em;}
   .policy-amt .left{color:var(--cyan);}
   .policy-badge{font-family:var(--mono); font-size:11px; text-align:center;}
-  .policy-badge.done{color:var(--banana); text-shadow:0 0 8px rgba(255,210,63,0.5);}
+  .policy-badge.done{color:var(--banana); text-shadow:0 0 8px rgba(244,207,94,0.5);}
   .policy-badge.blocked{color:var(--faint);}
   .policy-winners{
-    border:1px solid rgba(255,210,63,0.4); border-radius:4px;
-    background:linear-gradient(135deg, rgba(255,210,63,0.10), rgba(255,210,63,0.03));
+    border:1px solid rgba(244,207,94,0.4); border-radius:4px;
+    background:linear-gradient(135deg, rgba(244,207,94,0.10), rgba(244,207,94,0.03));
     padding:14px 16px; margin-bottom:16px;
-    box-shadow:0 0 18px rgba(255,210,63,0.10) inset;
+    box-shadow:0 0 18px rgba(244,207,94,0.10) inset;
   }
   .policy-winners-title{
     font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.12em;
-    color:var(--banana); text-shadow:0 0 10px rgba(255,210,63,0.5); margin-bottom:10px;
+    color:var(--banana); text-shadow:0 0 10px rgba(244,207,94,0.5); margin-bottom:10px;
   }
   .policy-winners-names{display:flex; flex-wrap:wrap; gap:10px;}
   .policy-winner{
     font-size:15px; font-weight:700; color:var(--banana);
-    text-shadow:0 0 12px rgba(255,210,63,0.55);
-    background:rgba(255,210,63,0.12); border:1px solid rgba(255,210,63,0.35);
+    text-shadow:0 0 12px rgba(244,207,94,0.55);
+    background:rgba(244,207,94,0.12); border:1px solid rgba(244,207,94,0.35);
     padding:6px 14px; border-radius:4px;
   }
   .policy-sub-title{
@@ -261,7 +261,7 @@
   .cis-chart-wrap{position:relative; width:200px; height:200px; flex-shrink:0;}
   .cis-chart-wrap svg{width:100%; height:100%; transform:rotate(0deg);}
   .cis-total{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;}
-  .cis-total-num{font-family:var(--mono); font-size:30px; font-weight:800; color:var(--cyan); text-shadow:0 0 14px rgba(53,212,255,0.5);}
+  .cis-total-num{font-family:var(--mono); font-size:30px; font-weight:800; color:var(--cyan); text-shadow:0 0 14px rgba(212,175,55,0.5);}
   .cis-total-label{font-size:10px; color:var(--faint); letter-spacing:0.08em; margin-top:2px;}
   .cis-legend{flex:1; min-width:180px; display:flex; flex-direction:column; gap:9px;}
   .cis-legend-item{display:flex; align-items:center; gap:9px; font-size:13px;}
@@ -279,7 +279,7 @@
     background:var(--cyan-soft); border:1px solid var(--cyan); color:var(--cyan); font-family:var(--mono);
     font-size:12px; font-weight:700; letter-spacing:0.05em; padding:8px 18px; border-radius:4px; cursor:pointer;
   }
-  .cis-save-btn:hover{background:rgba(53,212,255,0.24);}
+  .cis-save-btn:hover{background:rgba(212,175,55,0.24);}
   .cis-save-status{font-size:11px; color:var(--muted); font-family:var(--mono);}
   .placeholder code{font-family:var(--mono); color:var(--cyan); background:var(--cyan-soft); padding:1px 5px; border-radius:3px;}
 
@@ -369,19 +369,19 @@
 <body>
 <div class="bg-deco" aria-hidden="true">
   <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(53,212,255,0.10)" stroke-width="1"/>
-    <circle cx="1250" cy="120" r="180" fill="none" stroke="rgba(53,212,255,0.14)" stroke-width="1"/>
-    <circle cx="1250" cy="120" r="120" fill="none" stroke="rgba(53,212,255,0.10)" stroke-width="1" stroke-dasharray="3 8"/>
-    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(53,212,255,0.18)" stroke-width="1" stroke-dasharray="1 10"/>
-    <polygon points="120,780 195,738 270,780 270,864 195,906 120,864" fill="none" stroke="rgba(34,196,166,0.16)" stroke-width="1.3"/>
-    <polygon points="80,700 130,672 180,700 180,756 130,784 80,756" fill="none" stroke="rgba(34,196,166,0.10)" stroke-width="1"/>
-    <circle cx="60" cy="80" r="90" fill="none" stroke="rgba(53,212,255,0.09)" stroke-width="1"/>
-    <path d="M0 40 L40 40 L40 0" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
-    <path d="M1440 40 L1400 40 L1400 0" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
-    <path d="M0 860 L40 860 L40 900" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
-    <path d="M1440 860 L1400 860 L1400 900" fill="none" stroke="rgba(53,212,255,0.22)" stroke-width="1.5"/>
-    <line x1="900" y1="0" x2="900" y2="900" stroke="rgba(53,212,255,0.04)" stroke-width="1"/>
-    <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(53,212,255,0.04)" stroke-width="1"/>
+    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(212,175,55,0.10)" stroke-width="1"/>
+    <circle cx="1250" cy="120" r="180" fill="none" stroke="rgba(212,175,55,0.14)" stroke-width="1"/>
+    <circle cx="1250" cy="120" r="120" fill="none" stroke="rgba(212,175,55,0.10)" stroke-width="1" stroke-dasharray="3 8"/>
+    <circle cx="1250" cy="120" r="240" fill="none" stroke="rgba(212,175,55,0.18)" stroke-width="1" stroke-dasharray="1 10"/>
+    <polygon points="120,780 195,738 270,780 270,864 195,906 120,864" fill="none" stroke="rgba(244,207,94,0.16)" stroke-width="1.3"/>
+    <polygon points="80,700 130,672 180,700 180,756 130,784 80,756" fill="none" stroke="rgba(244,207,94,0.10)" stroke-width="1"/>
+    <circle cx="60" cy="80" r="90" fill="none" stroke="rgba(212,175,55,0.09)" stroke-width="1"/>
+    <path d="M0 40 L40 40 L40 0" fill="none" stroke="rgba(212,175,55,0.22)" stroke-width="1.5"/>
+    <path d="M1440 40 L1400 40 L1400 0" fill="none" stroke="rgba(212,175,55,0.22)" stroke-width="1.5"/>
+    <path d="M0 860 L40 860 L40 900" fill="none" stroke="rgba(212,175,55,0.22)" stroke-width="1.5"/>
+    <path d="M1440 860 L1400 860 L1400 900" fill="none" stroke="rgba(212,175,55,0.22)" stroke-width="1.5"/>
+    <line x1="900" y1="0" x2="900" y2="900" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
+    <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(212,175,55,0.04)" stroke-width="1"/>
   </svg>
 </div>
 <div class="wrap">
@@ -390,14 +390,14 @@
     <div class="header-left">
       <div class="radar">
         <svg viewBox="0 0 64 64">
-          <circle cx="32" cy="32" r="30" fill="none" stroke="rgba(53,212,255,0.25)" stroke-width="1"/>
-          <circle cx="32" cy="32" r="22" fill="none" stroke="rgba(53,212,255,0.35)" stroke-width="1"/>
-          <circle cx="32" cy="32" r="14" fill="none" stroke="rgba(53,212,255,0.5)" stroke-width="1"/>
-          <circle cx="32" cy="32" r="3" fill="#35d4ff"/>
+          <circle cx="32" cy="32" r="30" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="22" fill="none" stroke="rgba(212,175,55,0.35)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="14" fill="none" stroke="rgba(212,175,55,0.5)" stroke-width="1"/>
+          <circle cx="32" cy="32" r="3" fill="#d4af37"/>
           <g class="sweep">
-            <path d="M32 32 L32 2 A30 30 0 0 1 55 15 Z" fill="rgba(53,212,255,0.18)"/>
+            <path d="M32 32 L32 2 A30 30 0 0 1 55 15 Z" fill="rgba(212,175,55,0.18)"/>
           </g>
-          <circle cx="32" cy="32" r="30" fill="none" stroke="#35d4ff" stroke-width="1.4" stroke-dasharray="2 6"/>
+          <circle cx="32" cy="32" r="30" fill="none" stroke="#d4af37" stroke-width="1.4" stroke-dasharray="2 6"/>
         </svg>
       </div>
       <div>
@@ -477,7 +477,7 @@
   </div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">01</span><h2>CMIP · CANP 리더보드</h2><div class="rule"></div>
   </div>
   <div class="board hud-frame">
@@ -486,7 +486,7 @@
   </div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">02</span><h2>팀별 업적 현황</h2><div class="rule"></div>
   </div>
   <div class="teams">
@@ -505,7 +505,7 @@
   </div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">03</span><h2>CIS 누적 현황</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
@@ -522,7 +522,7 @@
   </div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">04</span><h2>월간 지점 · 팀 일정</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
@@ -530,13 +530,13 @@
   </div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">05</span><h2>시책 현황</h2><div class="rule"></div>
   </div>
   <div id="policy-list"></div>
 
   <div class="section-head">
-    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#35d4ff" stroke-width="1.3"/></svg>
+    <svg class="hexmark" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="none" stroke="#d4af37" stroke-width="1.3"/></svg>
     <span class="idx">06</span><h2>시상 · 승진 진도</h2><div class="rule"></div>
   </div>
   <div class="card hud-frame">
