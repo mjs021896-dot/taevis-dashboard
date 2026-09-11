@@ -760,11 +760,8 @@ function renderCustomPolicyBody(p){
     const remain = Math.max(0, s.total - s.used);
     const pct = Math.min(100, (s.used/s.total*100)).toFixed(0);
     return (
-      '<div class="policy-row" style="flex-direction:column; align-items:stretch; gap:6px; margin-bottom:10px;">' +
-        '<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">' +
-          '<span class="policy-name">' + s.item + '</span>' +
-          '<span class="policy-amt"><b>' + remain + '</b>개 남음 / 총 ' + s.total + '개 <span class="lbl">(건당 ' + s.perContract + '개 지급 · ' + s.used + '개 소진)</span></span>' +
-        '</div>' +
+      '<div style="margin-bottom:14px;">' +
+        '<div class="policy-name" style="margin-bottom:6px;">' + s.item + ' <span class="policy-amt" style="font-weight:400; display:inline; text-align:left;"><b>' + remain + '</b>개 남음 / 총 ' + s.total + '개 <span class="lbl">(건당 ' + s.perContract + '개 지급 · ' + s.used + '개 소진)</span></span></div>' +
         '<div class="policy-bar-track"><div class="policy-bar-fill" style="width:' + pct + '%; background:var(--cyan); color:var(--cyan);"></div></div>' +
       '</div>'
     );
